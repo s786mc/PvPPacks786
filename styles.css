@@ -42,10 +42,9 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Mikhak";
             line-height: 1.6;
         
-    font-family: 'Mehr', sans-serif;
       
         }
       .tro  {
@@ -66,7 +65,7 @@
     padding: 20px 140px;
     text-decoration: none;
     display: inline-block;
-    font-family: "Mehr";
+    font-family: "Mikhak";
         font-size: 24px;
       }
       .dokme:active  {
@@ -86,7 +85,7 @@
       #end  {
         border-radius: 30px;
         border-color: orange;
-        font-family: sans-serif;
+        font-family: "Mikhak";
         background-color: #B97B1E;
         font-color: withe;
         webkit-text-fill-color: white;
@@ -103,3 +102,5 @@
   color: withe;
   text-align: right;
 }
+p  {
+  font-family: "Mikhak";
