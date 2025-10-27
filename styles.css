@@ -95,3 +95,11 @@
     font-family: 'Mikhak';
     src: url('./fonts/Mikhak.ttf') format('truetype');
 }
+.packs-help  {
+  color: orange;
+  text-align: center;
+}
+.packs-help:active  {
+  color: withe;
+  text-align: right;
+}
