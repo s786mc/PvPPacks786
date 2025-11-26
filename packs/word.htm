@@ -219,38 +219,7 @@
    function showAlert() {
      alert("سازنده وبگاه: ItsSadegh786MC(مالک PvPPacks_786)")
    }
-    
-document.querySelectorAll('.download-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const originalText = this.innerHTML;
-        const originalBg = this.style.backgroundColor;
-        
-        this.innerHTML = 'در حال دانلود... ⏳';
-        this.style.backgroundColor = '#ff9800';
-        
-        setTimeout(() => {
-            this.innerHTML = 'دانلود شد! ✅';
-            this.style.backgroundColor = '#4CAF50';
-            
-            setTimeout(() => {
-                this.innerHTML = originalText;
-                this.style.backgroundColor = originalBg;
-            }, 2000);
-        }, 1500);
-    });
-});
-
-
-document.getElementById('download1').addEventListener('click', function(e) {
-    e.preventDefault();
-    
-});
-
-document.getElementById('download2').addEventListener('click', function(e) {
-    e.preventDefault();
-    
-});
+  
     </script>
 </body>
 </html>
