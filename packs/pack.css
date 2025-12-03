@@ -2,8 +2,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Mehr', sans-serif;
+            font-family: 'Mikhak', sans-serif;
         }
+@font-face {
+    font-family: 'Mikhak';
+    src: url('../fonts/Mikhak.ttf') format('truetype');
+}
 
         body {
             background-color: #f9f9f9;
