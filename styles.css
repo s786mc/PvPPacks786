@@ -62,11 +62,11 @@
     border-style: dashed;
     margin: 28px;
     border-color: orange;
-    padding: 20px 140px;
+    padding: 0px;
     text-decoration: none;
     display: inline-block;
     font-family: "Mikhak";
-        font-size: 24px;
+        font-size: 20px;
       }
       .dokme:active  {
         color: orange;
