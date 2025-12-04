@@ -59,8 +59,8 @@
     color: #B97B1E;
     background-color: #FFC05A;
     border-radius: 40px;
-    border-style: dashed;
-    margin: 28px;
+    border-style: solid;
+    margin: 10px;
     border-color: orange;
     padding: 0px;
     text-decoration: none;
