@@ -55,33 +55,66 @@
       .p-center  {
         text-align: center;
       }
-      .dokme {
-    color: #B97B1E;
-    background-color: #FFC05A;
-    border-radius: 20px;
-    border-style: solid;
-    margin: 10px;
-    border-color: orange;
-    padding: 36pxpx;
-    text-decoration: none;
-    display: inline-block;
-    font-family: "Mikhak";
-        font-size: 20px;
-      }
-      .dokme:active  {
-        color: orange;
-    background-color: #E79E00;
-    border-radius: 12px;
-    border-style: dashed;
-    margin: 28px;
-    border-color: red;
-    padding: 20px 140px;
-    text-decoration: none;
-    display: inline-block;
-    font-family: "Mehr";
-        font-size: 24px;
-      text-ubpo: ایدین;
-      }
+      /* کانتینر ردیف دکمه‌ها */
+.dokme-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0;
+  flex-wrap: nowrap; /* مهم: کنار هم بمانند */
+  box-sizing: border-box;
+}
+
+/* دکمه‌ها: هر کدام دقیقاً نصف عرض کانتینر */
+.dokme {
+  color: #B97B1E;
+  background-color: #FFC05A;
+  border-radius: 20px;
+  border: 2px solid orange;
+  padding: 12px 18px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Mikhak", "Mehr", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 48px;
+
+  /* این دو خط باعث می‌شود دقیقاً نصف شوند */
+  flex: 0 0 50%;
+  max-width: 50%;
+  box-sizing: border-box;
+}
+
+/* افکت ها هنگام هاور و فوکوس */
+.dokme:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  background-color: #ffdf8f;
+}
+.dokme:active { transform: translateY(-1px); }
+.dokme:focus {
+  outline: 3px solid rgba(185,123,30,0.18);
+  outline-offset: 3px;
+}
+
+/* اگر فقط یک دکمه داخل کانتینر باشد، آن را جمع و جورتر کن */
+.dokme-row.single .dokme {
+  max-width: 360px;
+  flex: 0 0 auto;
+}
+
+/* در صورت نیاز می‌توان breakpoint خیلی کوچک اضافه کرد؛ فعلاً موبایل هم نصف می‌ماند */
       #end  {
         border-radius: 30px;
         border-color: orange;
