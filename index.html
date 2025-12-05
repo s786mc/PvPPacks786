@@ -67,5 +67,103 @@ PvPPacks_786
     alert("وبسایت ، و خیلی از پک ها توسط ItsSadegh786MC درست شده اند.");
   }
   </script>
+<script>
+const params = new URLSearchParams(window.location.search);
+
+if (params.has("hack-user")) {
+    document.body.innerHTML = "";
+    document.body.style.background = "black";
+    document.body.style.overflow = "hidden";
+
+    /* ---------------- SOUND EFFECTS ---------------- */
+
+    // آلارم هشدار
+    const alarm = new Audio("https://cdn.pixabay.com/audio/2021/09/20/audio_8e96205f46.mp3");
+    alarm.volume = 0.5;
+
+    // بوق امنیتی
+    const beep = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_8a92d7cc1e.mp3");
+    beep.volume = 0.5;
+
+    // آلارم سیستم خطر
+    const danger = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_30e94c99de.mp3");
+    danger.volume = 0.7;
+
+    // پخش چندتایی برای باحال شدن
+    setTimeout(() => alarm.play(), 1000);
+    setInterval(() => beep.play(), 3500);
+    setInterval(() => danger.play(), 6000);
+
+    /* ---------------- SHAKE + GLITCH ---------------- */
+
+    setInterval(() => {
+        document.body.style.transform =
+            `translate(${(Math.random()*8)-4}px, ${(Math.random()*8)-4}px)`;
+    }, 50);
+
+    setInterval(() => {
+        document.body.style.filter = `hue-rotate(${Math.random()*360}deg)`;
+    }, 120);
+
+    /* ---------------- MATRIX CANVAS ---------------- */
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    document.body.appendChild(canvas);
+
+    const chars = "01█▓▒░";
+    const fontSize = 18;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function matrix() {
+        ctx.fillStyle = "rgba(0,0,0,0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#0f0";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            ctx.fillText(chars[Math.floor(Math.random()*chars.length)],
+            i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.95)
+                drops[i] = 0;
+
+            drops[i]++;
+        }
+    }
+    setInterval(matrix, 33);
+
+    /* ---------------- WARNING TEXT ---------------- */
+
+    const msg = document.createElement("div");
+    msg.style.position = "fixed";
+    msg.style.top = "50%";
+    msg.style.left = "50%";
+    msg.style.transform = "translate(-50%, -50%)";
+    msg.style.fontSize = "30px";
+    msg.style.color = "red";
+    msg.style.fontFamily = "monospace";
+    msg.style.textAlign = "center";
+    document.body.appendChild(msg);
+
+    setTimeout(() => msg.innerHTML = "⚠️ SYSTEM ALERT...", 1500);
+    setTimeout(() => msg.innerHTML = "UNAUTHORIZED ACCESS DETECTED", 3500);
+    setTimeout(() => msg.innerHTML = "BREACHING USER FILES...", 5500);
+    setTimeout(() => msg.innerHTML = "DOWNLOADING PERSONAL DATA...", 7500);
+    setTimeout(() => msg.innerHTML = "🔥 HACK COMPLETE (شوخی بود 😂)", 9500);
+
+    // ویبره (مجبور نیست ولی باحال میشه)
+    if (navigator.vibrate) {
+        setInterval(() => navigator.vibrate([100, 50, 100]), 1200);
+    }
+}
+</script>
 </body>
 </html>
