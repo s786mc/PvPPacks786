@@ -1,0 +1,40 @@
+.warning-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffebee; /* قرمز ملایم */
+    color: #c62828;
+    padding: 12px;
+    text-align: center;
+    font-family: 'Mikhak', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    z-index: 9999;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.warning-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.warning-text {
+    font-weight: 500;
+}
+
+.countdown {
+    color: #666;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* برای نمایش در حالت دسکتاپ */
+@media (min-width: 769px) {
+    .warning-container {
+        display: block;
+    }
+}
