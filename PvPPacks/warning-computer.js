@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // بررسی آیا دستگاه عرض صفحه بیشتر از 768px دارد (دسکتاپ)
     if (window.innerWidth >= 769) {
-        let secondsLeft = 5;
+        let secondsLeft = 10;
         
         // آپدیت تایمر هر ثانیه
         const countdownInterval = setInterval(() => {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // مخفی کردن هشدار پس از 5 ثانیه به صورت خودکار
         setTimeout(() => {
             warningContainer.style.display = 'none';
-        }, 5000);
+        }, 10000);
     } else {
         // اگر موبایل است، هشدار را اصلا نمایش نده
         warningContainer.style.display = 'none';
