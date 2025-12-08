@@ -1,3 +1,7 @@
+@font-face {
+font-family: 'Mikhak';
+src: url("../fonts/Mikhak.ttf");
+font-style: normal; font-display: swap; }
 .warning-container {
     display: none;
     position: fixed;
@@ -20,16 +24,22 @@
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
+font-family: 'Mikhak;
 }
 
 .warning-text {
     font-weight: 500;
+font-family: 'Mikhak';
 }
 
 .countdown {
     color: #666;
     font-weight: bold;
     font-size: 16px;
+redim: flexing; font-family: sans-serif;
+border-style: solid; border-color: red;
+border-shadow: 2px; border-radius: 340px;
+padding: 2px; margin: 1px;
 }
 
 /* برای نمایش در حالت دسکتاپ */
