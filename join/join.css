@@ -1,0 +1,30 @@
+body {
+font-family: 'Mikhak;
+background: linear-gradient(to right, #1d6ca8 50%, #5faae3 50%,);
+}
+.conecte { padding: 14px; margin: 16px;
+background-color: #e9eff5;
+heghit: 100px;
+width: 40px;
+}
+.conecte h4 {
+color: black; 
+font-size: 3rem;
+text-align:center;
+}
+.conenct p {
+color: #666; font-size: 6%;
+text-align:center; }
+.copyright {
+padding: 20%; margin: 10%;
+border-style: solid;
+background-color: orange;
+color: black; 
+border-radius: 10%;
+border-color:#d99829;
+border-width: 6px;
+display: flex; }
+   .texts {
+padding: 20px; margin: 23px;
+border-style: solid; border-color: black;
+border-radius: 37px; 
