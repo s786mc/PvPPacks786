@@ -2,14 +2,14 @@ body {
 font-family: 'Mikhak;
 background: linear-gradient(to right, #1d6ca8 50%, #5faae3 50%,);
 }
-.conecte { padding: 14px; margin: 16px;
+.conecte { padding: 14%; margin: 16%;
 background-color: #e9eff5;
 heghit: 100px;
 width: 40px;
 }
 .conecte h4 {
 color: black; 
-font-size: 3rem;
+font-size: 3%;
 text-align:center;
 }
 .conenct p {
@@ -20,11 +20,11 @@ padding: 20%; margin: 10%;
 border-style: solid;
 background-color: orange;
 color: black; 
-border-radius: 10%;
+border-radius: 20%;
 border-color:#d99829;
 border-width: 6px;
-display: flex; }
+ }
    .texts {
-padding: 20px; margin: 23px;
+padding: 20%; margin: 23%;
 border-style: solid; border-color: black;
 border-radius: 37px; 
