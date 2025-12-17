@@ -8,6 +8,10 @@
     font-family: 'Mikhak';
     src: url('../fonts/Mikhak.ttf') format('truetype');
 }
+@font-face {
+font-family: 'mcbold';
+src: url('../fonts/Minecraft-blold.otf')
+format('truetype'); }
 
         body {
             background-color: #f9f9f9;
@@ -43,6 +47,7 @@
             z-index: 2;
             position: relative;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+font-family: 'mcbold';
         }
 
         .diagonal-section {
