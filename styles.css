@@ -4,7 +4,10 @@
             box-sizing: border-box;
     font-family: 'Mehr', sans-serif;
         }
-
+@font-face {
+font-family: 'mcbold';
+src: url('../fonts/Minecraft-blold.otf')
+format('truetype'); }
         .header {
             background: linear-gradient(135deg, #ff7e00, #ff5500);
             height: 200px;
@@ -22,6 +25,7 @@
             text-align: center;
             z-index: 2;
             position: relative;
+font-family: 'mcbold';
         }
 
         .diagonal-section {
