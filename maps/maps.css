@@ -1,5 +1,12 @@
 /* پایه */
-
+@font-face {
+    font-family: 'Mikhak';
+    src: url('./Mikhak.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'mc';
+    src: url('./Minecraft-blold.otf') format('truetype');
+}
 * { box-sizing: border-box; margin:0; padding:0; }
 html,body { height:100%; font-family: 'Mikhak, sans-serif; background:#f6f6f6; color:#333; direction:rtl;
 
@@ -13,7 +20,7 @@ html,body { height:100%; font-family: 'Mikhak, sans-serif; background:#f6f6f6; c
 }
 .header-inner { width:100%; max-width:1100px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; }
 .site-logo { width:72px; height:72px; border-radius:12px; object-fit:cover; box-shadow:0 6px 18px rgba(0,0,0,0.15); cursor:pointer; }
-.header-text { color:#fff; font-weight:700; font-size:1.2rem; text-shadow:0 2px 6px rgba(0,0,0,0.2); font-family: 'mcbold', sans-serif; }
+.header-text { color:#fff; font-weight:700; font-size:1.2rem; text-shadow:0 2px 6px rgba(0,0,0,0.2); font-family: 'mc', sans-serif; }
 
 /* بخش مورب */
 .diagonal-section {
