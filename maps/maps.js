@@ -82,11 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
     return `${m}:${s}`;
   }
 
-  // دکمه‌های دانلود/پیش‌نمایش/اشتراک (نمونه)
-  document.getElementById('downloadBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('دانلود آغاز می‌شود (نمونه). لینک واقعی را جایگزین کنید.');
-  });
+ 
+ 
   document.getElementById('previewBtn').addEventListener('click', (e) => {
     e.preventDefault();
     // نمونه: اسکرول به ویدیو و پخش
