@@ -1,0 +1,66 @@
+/* پایه */
+* { box-sizing: border-box; margin:0; padding:0; }
+html,body { height:100%; font-family: 'Mehr', sans-serif; background:#f6f6f6; color:#333; direction:rtl; }
+
+/* هدر */
+.header {
+  background: linear-gradient(135deg,#ff7e00,#ff5500);
+  height:120px; display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.header-inner { width:100%; max-width:1100px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; }
+.site-logo { width:72px; height:72px; border-radius:12px; object-fit:cover; box-shadow:0 6px 18px rgba(0,0,0,0.15); cursor:pointer; }
+.header-text { color:#fff; font-weight:700; font-size:1.2rem; text-shadow:0 2px 6px rgba(0,0,0,0.2); font-family: 'mcbold', sans-serif; }
+
+/* بخش مورب */
+.diagonal-section {
+  background: linear-gradient(135deg,#ff7e00,#ff5500);
+  clip-path: polygon(0 0,100% 0,100% 100%,0 80%);
+  padding:40px 20px 80px;
+  margin-top:-30px;
+}
+.content { max-width:1100px; margin:0 auto; background:#fff; border-radius:14px; padding:28px; box-shadow:0 12px 40px rgba(0,0,0,0.08); }
+
+/* اطلاعات کلی */
+.map-info { display:flex; flex-direction:column; gap:18px; align-items:center; text-align:right; }
+.map-top { display:flex; gap:18px; align-items:center; width:100%; }
+.map-icon { width:120px; height:120px; border-radius:12px; object-fit:cover; box-shadow:0 6px 18px rgba(0,0,0,0.08); cursor:pointer; }
+.map-meta { flex:1; }
+.map-title { color:#ff5500; font-size:1.6rem; margin-bottom:6px; }
+.map-short, .map-compat { color:#555; margin-bottom:6px; }
+
+/* ویدیو و کنترل‌ها */
+.video-wrapper { width:100%; max-width:900px; margin:8px auto 0; position:relative; }
+.map-video { width:100%; border-radius:10px; background:#000; display:block; max-height:520px; object-fit:cover; }
+.video-controls {
+  display:flex; align-items:center; gap:10px; padding:10px; background:rgba(255,255,255,0.95);
+  border-radius:10px; margin-top:8px; box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+.vc-btn { background:#ff7e00; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700; }
+.vc-btn:hover { transform:translateY(-2px); }
+.vc-progress { flex:1; height:8px; background:#eee; border-radius:8px; overflow:hidden; cursor:pointer; }
+.vc-progress-bar { width:0%; height:100%; background:linear-gradient(90deg,#ff5500,#ff7e00); transition:width 0.1s linear; }
+.vc-time { font-size:0.9rem; color:#444; min-width:90px; text-align:center; }
+.vc-volume { width:110px; }
+
+/* تصویر بعد از ویدیو */
+.map-image { width:100%; max-width:900px; border-radius:10px; margin:14px auto; display:block; box-shadow:0 8px 24px rgba(0,0,0,0.08); object-fit:cover; }
+
+/* جزئیات و دکمه‌ها */
+.map-details { width:100%; max-width:900px; margin:6px auto; color:#444; line-height:1.6; }
+.action-buttons { display:flex; gap:12px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+.btn { text-decoration:none; padding:12px 22px; border-radius:999px; font-weight:700; cursor:pointer; border:2px solid transparent; }
+.btn.primary { background:#4CAF50; color:#fff; border-style:dashed; border-color:#90EE90; box-shadow:0 6px 18px rgba(0,0,0,0.12); }
+.btn.secondary { background:#ff5500; color:#fff; }
+.btn.ghost { background:transparent; color:#ff5500; border:2px solid #ffcfb0; }
+
+/* فوتر */
+.footer { text-align:center; padding:20px; margin-top:20px; }
+.creator-btn { background:#B97B1E; color:#fff; border-radius:30px; padding:10px 22px; border:2px solid #ff7e00; cursor:pointer; }
+
+/* واکنش‌گرایی */
+@media (max-width:900px) {
+  .map-top { flex-direction:column; align-items:center; text-align:center; }
+  .vc-volume { display:none; }
+  .vc-time { display:none; }
+}
