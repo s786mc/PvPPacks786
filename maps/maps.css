@@ -1,14 +1,14 @@
 /* پایه */
 @font-face {
     font-family: 'Mikhak';
-    src: url('./Mikhak.ttf') format('truetype');
+    src: url('../fonts/Mikhak.ttf') format('truetype');
 }
 @font-face {
     font-family: 'mc';
-    src: url('./Minecraft-blold.otf') format('truetype');
+    src: url('./fonts/Minecraft-blold.otf') format('truetype');
 }
 * { box-sizing: border-box; margin:0; padding:0; }
-html,body { height:100%; font-family: 'Mikhak, sans-serif; background:#f6f6f6; color:#333; direction:rtl;
+html,body { height:100%; font-family: 'Mikhak', sans-serif; background:#f6f6f6; color:#333; direction:rtl;
 
  }
 
