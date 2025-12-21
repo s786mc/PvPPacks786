@@ -1,6 +1,9 @@
 /* پایه */
+
 * { box-sizing: border-box; margin:0; padding:0; }
-html,body { height:100%; font-family: 'Mehr', sans-serif; background:#f6f6f6; color:#333; direction:rtl; }
+html,body { height:100%; font-family: 'Mikhak, sans-serif; background:#f6f6f6; color:#333; direction:rtl;
+
+ }
 
 /* هدر */
 .header {
