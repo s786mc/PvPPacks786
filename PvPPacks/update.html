@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>در حال آپدیت</title>
+
+  <style>
+    @font-face {
+      font-family: 'Mikhak';
+      src: url('../fonts/Mikhak.ttf') format('truetype');
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9800, #ff5722);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Mikhak', sans-serif;
+    }
+
+    .update-box {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 40px 60px;
+      border-radius: 20px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      backdrop-filter: blur(6px);
+    }
+
+    .update-box h1 {
+      font-size: 32px;
+      margin: 0;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%   { opacity: 0.5; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="update-box">
+    <h1>داره آپدیت میشه وبسایت</h1>
+  </div>
+</body>
+</html>
