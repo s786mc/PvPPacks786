@@ -178,51 +178,53 @@ if (params.has("hack-user")) {
 }
 </script>
 <style>
-#user-mini {
+<style>
+#pp-user-mini {
   position: fixed;
-  top: 8px;
-  right: 8px;
+  top: 10px;
+  right: 10px;
   z-index: 999999;
   cursor: pointer;
   font-size: 12px;
+  font-family: inherit;
 }
 
-#user-mini .icon,
-#user-mini .user {
-  background: white;
+#pp-user-mini .icon,
+#pp-user-mini .name {
+  background: #fff;
   color: #ff5500;
   border-radius: 999px;
   padding: 4px 8px;
   display: flex;
   align-items: center;
   gap: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
 
-#user-mini .icon {
+#pp-user-mini .icon {
   width: 26px;
   height: 26px;
-  justify-content: center;
   padding: 0;
+  justify-content: center;
   font-size: 15px;
 }
 </style>
 
-<div id="user-mini"></div>
+<div id="pp-user-mini"></div>
 
 <script>
-const box = document.getElementById("user-mini");
-const account = JSON.parse(localStorage.getItem("pp-account"));
+(function () {
+  const box = document.getElementById("pp-user-mini");
+  const user = JSON.parse(localStorage.getItem("pp-user"));
 
-if (account) {
-  box.innerHTML = `<div class="user">👤 ${account.name}</div>`;
-} else {
-  box.innerHTML = `<div class="icon">👤</div>`;
-}
+  if (user && user.name) {
+    box.innerHTML = `<div class="name">👤 ${user.name}</div>`;
+  } else {
+    box.innerHTML = `<div class="icon">👤</div>`;
+  }
 
-box.onclick = () => {
-  location.href = "./login";
-};
+  box.onclick = () => location.href = "./login.html";
+})();
 </script>
 </body>
 </html>
