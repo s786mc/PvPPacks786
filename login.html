@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ورود</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  background: #fff;
+  color: #ff5500;
+}
+
+.box {
+  width: 90%;
+  max-width: 320px;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 8px;
+  border: 1px solid #ff5500;
+}
+
+button {
+  background: #ff5500;
+  color: #fff;
+  border: none;
+}
+
+a {
+  color: #ff5500;
+  font-size: 14px;
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+<div class="box">
+  <h3>ورود</h3>
+
+  <input id="u" placeholder="یوزرنیم">
+  <input id="p" type="password" placeholder="رمز عبور">
+
+  <button onclick="login()">ورود</button>
+
+  <p>
+    <a href="../register">اکانت ندارید؟ یکی بسازید.</a>
+  </p>
+</div>
+
+<script>
+function login() {
+  const u = u.value.trim();
+  const p = p.value;
+
+  const acc = JSON.parse(localStorage.getItem("pp-account"));
+
+  if (!acc || acc.username !== u || acc.password !== p) {
+    alert("یوزرنیم یا رمز اشتباه است");
+    return;
+  }
+
+  location.href = "../";
+}
+</script>
+</body>
+</html>
