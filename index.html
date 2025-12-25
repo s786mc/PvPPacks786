@@ -22,19 +22,17 @@ PvPPacks_786
 <meta name="theme-color" content="#ff5500">
 
 <link href="./PvPPacks/OffWarn.css" rel="stylesheet">
-</head>
-<body>
-    <header class="header">
-<style>
 <style>
 #pp-user-mini {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 999999;
+  position: absolute;  /* نسبت به header */
+  top: 8px;
+  right: 8px;
+  z-index: 9999;
   cursor: pointer;
-  font-size: 12px;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #pp-user-mini .icon,
@@ -43,12 +41,12 @@ PvPPacks_786
   color: #ff5500;
   border-radius: 999px;
   padding: 4px 8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
   box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  font-size: 12px;
 }
-
 #pp-user-mini .icon {
   width: 26px;
   height: 26px;
@@ -57,23 +55,11 @@ PvPPacks_786
   font-size: 15px;
 }
 </style>
-
+</head>
+<body>
+    <header class="header">
 <div id="pp-user-mini"></div>
-
-<script>
-(function () {
-  const box = document.getElementById("pp-user-mini");
-  const user = JSON.parse(localStorage.getItem("pp-user"));
-
-  if (user && user.name) {
-    box.innerHTML = `<div class="name">👤 ${user.name}</div>`;
-  } else {
-    box.innerHTML = `<div class="icon">👤</div>`;
-  }
-
-  box.onclick = () => location.href = "./login.html";
-})();
-</script><br><br>
+<script src="./PvPPacks/r.js"></script>
  
         <div class="header-text" dir="ltr">@PvPPacks_786</div> 
     </header>
