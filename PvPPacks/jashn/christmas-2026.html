@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>کریسمس مبارک 🎄</title>
+
+  <style>
+    @font-face {
+      font-family: 'Mikhak';
+      src: url('.../fonts/Mikhak.ttf') format('truetype');
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Mikhak', sans-serif;
+      background: linear-gradient(135deg, #b71c1c, #1b5e20);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border-radius: 24px;
+      padding: 50px 70px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      z-index: 2;
+    }
+
+    .card h1 {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      font-size: 22px;
+      opacity: 0.95;
+    }
+
+    .tree {
+      font-size: 64px;
+      margin-bottom: 15px;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff; }
+      to   { text-shadow: 0 0 25px #ffeb3b; }
+    }
+
+    /* Snow */
+    .snow {
+      position: absolute;
+      top: -10px;
+      color: white;
+      user-select: none;
+      animation: fall linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="tree">🎄</div>
+    <h1>کریسمس مبارک</h1>
+    <p>امیدواریم سال جدید پر از شادی، آرامش و موفقیت باشه</p>
+  </div>
+
+  <script>
+    // Snow generator
+    for (let i = 0; i < 40; i++) {
+      const snow = document.createElement("div");
+      snow.className = "snow";
+      snow.innerHTML = "❄";
+      snow.style.left = Math.random() * 100 + "vw";
+      snow.style.animationDuration = 3 + Math.random() * 5 + "s";
+      snow.style.fontSize = 12 + Math.random() * 18 + "px";
+      document.body.appendChild(snow);
+    }
+  </script>
+
+</body>
+</html>
