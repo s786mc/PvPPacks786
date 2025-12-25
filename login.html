@@ -6,40 +6,36 @@
 <title>ورود</title>
 
 <style>
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: sans-serif;
-  background: #fff;
-  color: #ff5500;
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+  color:#ff5500;
+  font-family:sans-serif;
 }
-
-.box {
-  width: 90%;
-  max-width: 320px;
+.box{
+  width:90%;
+  max-width:320px;
 }
-
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin: 6px 0;
-  border-radius: 8px;
-  border: 1px solid #ff5500;
+input,button{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:8px;
+  border:1px solid #ff5500;
 }
-
-button {
-  background: #ff5500;
-  color: #fff;
-  border: none;
+button{
+  background:#ff5500;
+  color:#fff;
+  border:none;
 }
-
-a {
-  color: #ff5500;
-  font-size: 14px;
-  text-decoration: none;
+a{
+  color:#ff5500;
+  font-size:14px;
+  text-decoration:none;
 }
 </style>
 </head>
@@ -48,29 +44,34 @@ a {
 <div class="box">
   <h3>ورود</h3>
 
-  <input id="u" placeholder="یوزرنیم">
-  <input id="p" type="password" placeholder="رمز عبور">
+  <input id="login-user" placeholder="یوزرنیم">
+  <input id="login-pass" type="password" placeholder="رمز عبور">
 
   <button onclick="login()">ورود</button>
 
   <p>
-    <a href="https://s786mc.github.io/PvPPacks786/register">اکانت ندارید؟ یکی بسازید.</a>
+    <a href="./register.html">اکانت ندارید؟ یکی بسازید.</a>
   </p>
 </div>
 
 <script>
 function login() {
-  const u = u.value.trim();
-  const p = p.value;
+  const username = document.getElementById("login-user").value.trim();
+  const password = document.getElementById("login-pass").value;
 
-  const acc = JSON.parse(localStorage.getItem("pp-account"));
+  const acc = JSON.parse(localStorage.getItem("pp-user"));
 
-  if (!acc || acc.username !== u || acc.password !== p) {
+  if (!acc) {
+    alert("هیچ اکانتی ثبت نشده");
+    return;
+  }
+
+  if (acc.username !== username || acc.password !== password) {
     alert("یوزرنیم یا رمز اشتباه است");
     return;
   }
 
-  location.href = "../";
+  location.href = "./index.html";
 }
 </script>
 </body>
