@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PvPPacks786 AI Assistant</title>
+    <link rel="stylesheet" href="https://s786mc.github.io/PvPPacks786/packs/pack.css">
+    <link rel="stylesheet" href="ai.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- نوار هدر -->
+    <div class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-robot"></i>
+                <span>PvPPacks786 AI Assistant</span>
+            </div>
+            <div class="nav-links">
+                <a href="https://s786mc.github.io/PvPPacks786/packs/page" target="_blank">
+                    <i class="fas fa-box"></i> مشاهده پک‌ها
+                </a>
+                <a href="t.me/PvPPacks_786" target="_blank">
+                    <i class="fab fa-telegram"></i> تلگرام
+                </a>
+                <a href="https://s786mc.github.io/PvPPacks786" target="_blank">
+                    <i class="fas fa-globe"></i> وبسایت
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- محتوای اصلی -->
+    <div class="container">
+        <div class="main-content">
+            <!-- سایدبار -->
+            <div class="sidebar">
+                <div class="profile-section">
+                    <div class="avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>PvPPacks786 AI Assistant</h3>
+                    <p class="subtitle">Powered By ChatGPT</p>
+                    <div class="status">
+                        <span class="status-dot online"></span>
+                        <span>آنلاین</span>
+                    </div>
+                </div>
+
+                <div class="menu-section">
+                    <h4><i class="fas fa-cog"></i> تنظیمات</h4>
+                    <div class="setting-item">
+                        <label>نام شما:</label>
+                        <input type="text" id="userName" placeholder="مثلاً: علی">
+                    </div>
+                    <div class="setting-item">
+                        <label>سبک پاسخ:</label>
+                        <select id="responseStyle">
+                            <option value="friendly">دوستانه</option>
+                            <option value="professional">حرفه‌ای</option>
+                            <option value="detailed">مفصل</option>
+                        </select>
+                    </div>
+                    <button class="btn-save" onclick="saveSettings()">
+                        <i class="fas fa-save"></i> ذخیره تنظیمات
+                    </button>
+                </div>
+
+                <div class="info-section">
+                    <h4><i class="fas fa-info-circle"></i> اطلاعات</h4>
+                    <div class="info-item">
+                        <i class="fas fa-box"></i>
+                        <div>
+                            <span>تعداد پک‌ها:</span>
+                            <strong>50+</strong>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-comments"></i>
+                        <div>
+                            <span>پیام‌های امروز:</span>
+                            <strong id="todayMessages">0</strong>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-database"></i>
+                        <div>
+                            <span>حافظه:</span>
+                            <strong id="storageUsage">0 KB</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-links">
+                    <h4><i class="fas fa-link"></i> لینک‌های سریع</h4>
+                    <a href="https://s786mc.github.io/PvPPacks786/packs/page" target="_blank" class="quick-link">
+                        <i class="fas fa-list"></i> لیست کامل پک‌ها
+                    </a>
+                    <a href="t.me/PvPPacks_786" target="_blank" class="quick-link">
+                        <i class="fab fa-telegram"></i> کانال تلگرام
+                    </a>
+                    <a href="https://github.com/s786mc/PvPPacks786" target="_blank" class="quick-link">
+                        <i class="fab fa-github"></i> گیت‌هاب
+                    </a>
+                </div>
+            </div>
+
+            <!-- بخش چت -->
+            <div class="chat-section">
+                <div class="chat-header">
+                    <h2><i class="fas fa-comments"></i> چت با دستیار</h2>
+                    <div class="chat-info">
+                        <span id="currentTime"></span>
+                        <button class="btn-clear" onclick="clearChat()">
+                            <i class="fas fa-trash"></i> پاک کردن چت
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <!-- پیام خوش‌آمدگویی -->
+                    <div class="message ai-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="sender">PvPPacks786 AI Assistant</span>
+                                <span class="time">هم‌اکنون</span>
+                            </div>
+                            <div class="message-text">
+                                سلام! 👋 من دستیار هوش مصنوعی PvPPacks786 هستم! 
+                                <br><br>
+                                می‌تونم در مورد:
+                                <ul>
+                                    <li>پک‌های مختلف ماینکرافت راهنماییتون کنم</li>
+                                    <li>نحوه نصب و استفاده از پک‌ها رو توضیح بدم</li>
+                                    <li>پک مناسب برای نیازهاتون رو پیشنهاد بدم</li>
+                                    <li>به سوالات عمومی شما پاسخ بدم</li>
+                                </ul>
+                                <br>
+                                برای دیدن لیست کامل پک‌ها می‌تونید از 
+                                <a href="https://s786mc.github.io/PvPPacks786/packs/page" target="_blank">این لینک</a> 
+                                استفاده کنید.
+                                <br><br>
+                                چه کمکی می‌تونم بهتون بکنم؟
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <span>در حال تایپ...</span>
+                </div>
+
+                <div class="chat-input-section">
+                    <div class="input-container">
+                        <textarea 
+                            id="userInput" 
+                            placeholder="سوال خود را اینجا بنویسید... (برای ارسال Enter، برای خط جدید Shift+Enter)"
+                            rows="1"
+                            oninput="autoResize(this)"
+                            onkeydown="handleKeyDown(event)"
+                        ></textarea>
+                        <div class="input-actions">
+                            <button class="btn-send" onclick="sendMessage()" id="sendBtn">
+                                <i class="fas fa-paper-plane"></i> ارسال
+                            </button>
+                        </div>
+                    </div>
+                    <div class="quick-questions">
+                        <span>سوالات سریع:</span>
+                        <button class="quick-btn" onclick="askQuestion('بهترین پک PvP کدام است؟')">
+                            بهترین پک PvP؟
+                        </button>
+                        <button class="quick-btn" onclick="askQuestion('چطور پک نصب کنم؟')">
+                            نحوه نصب پک
+                        </button>
+                        <button class="quick-btn" onclick="askQuestion('پک texture دارید؟')">
+                            پک Texture
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- فوتر -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://s786mc.github.io/PvPPacks786" target="_blank">وبسایت اصلی</a>
+                <a href="https://s786mc.github.io/PvPPacks786/packs/page" target="_blank">تمامی پک‌ها</a>
+                <a href="t.me/PvPPacks_786" target="_blank">کانال تلگرام</a>
+                <a href="https://github.com/s786mc/PvPPacks786" target="_blank">سورس کد</a>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2024 PvPPacks786 AI Assistant. تمامی حقوق محفوظ است.</p>
+                <p class="powered-by">Powered by ChatGPT Technology</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="ai.js"></script>
+</body>
+</html>
