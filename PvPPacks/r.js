@@ -8,5 +8,5 @@ document.addEventListener("DOMContentLoaded", () => {
     box.innerHTML = `<div class="icon">👤</div>`;
   }
 
-  box.onclick = () => location.href = "./login.html";
+  box.onclick = () => location.href = "https://s786mc.github.io/PvPPacks786/login.html";
 });
