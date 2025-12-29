@@ -1,105 +1,177 @@
-// PvPPacks786 AI Assistant با API رایگان
-// =====================================
+// PvPPacks786 AI Assistant با DeepSeek API
+// ========================================
 
-// انتخاب یکی از APIهای رایگان
-const FREE_APIS = {
-    // گزینه 1: DeepSeek API (رایگان، فارسی خوب)
-    DEEPSEEK: {
-        url: "https://api.deepseek.com/v1/chat/completions",
-        apiKey: "sk-dd47c77abbd542c39720181ffe2ffc56", // نیاز به ثبت‌نام در deepseek.com
-        model: "deepseek-chat"
-    },
-    
-    // گزینه 2: OpenRouter (رایگان با محدودیت)
-    OPENROUTER: {
-        url: "https://openrouter.ai/api/v1/chat/completions",
-        apiKey: "", // ثبت‌نام در openrouter.ai
-        model: "openai/gpt-3.5-turbo"
-    },
-    
-    // گزینه 3: Groq (خیلی سریع و رایگان)
-    GROQ: {
-        url: "https://api.groq.com/openai/v1/chat/completions",
-        apiKey: "", // ثبت‌نام در groq.com
-        model: "llama2-70b-4096"
-    }
-};
+const DEEPSEEK_API_KEY = "sk-dd47c77abbd542c39720181ffe2ffc56"; // کلید خودت
+const DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions";
 
-// تنظیم API فعال
-const ACTIVE_API = FREE_APIS.DEEPSEEK; // یکی را انتخاب کن
+// پایگاه دانش
+const SYSTEM_PROMPT = `تو PvPPacks786 AI Assistant هستی که به فارسی پاسخ می‌دهی.
+مشخصات:
+- لینک پک‌ها: https://s786mc.github.io/PvPPacks786/packs/page
+- تلگرام: t.me/PvPPacks_786
+- وبسایت: https://s786mc.github.io/PvPPacks786
 
-// پایگاه دانش PvPPacks786
-const KNOWLEDGE = {
-    systemPrompt: `تو PvPPacks786 AI Assistant هستی. فقط به فارسی پاسخ بده.
-محدودیت‌ها:
-- فقط متن تولید کن (بدون عکس/کد)
-- لینک‌های اصلی:
-  • پک‌ها: https://s786mc.github.io/PvPPacks786/packs/page
-  • تلگرام: t.me/PvPPacks_786
-  • وبسایت: https://s786mc.github.io/PvPPacks786
+قوانین:
+1. فقط فارسی پاسخ بده
+2. درباره پک‌های ماینکرافت راهنمایی کن
+3. لینک بالا را برای پک‌ها بده
+4. فقط متن تولید کن (نه عکس/کد)
+5. اگر سوال غیرمرتبط بود، بگو فقط در مورد پک‌ها می‌توانی کمک کنی`;
 
-اگر سوال درباره پک بود، راهنمایی کن و لینک صفحه پک‌ها را بده.
-اگر سوال درباره تلگرام بود، لینک کانال را بده.`
-};
-
-// سیستم ذخیره‌سازی
-class ChatStorage {
+class ChatSystem {
     constructor() {
-        this.history = this.load();
+        this.messages = [];
+        this.loadMessages();
+        this.init();
     }
     
-    load() {
-        return JSON.parse(localStorage.getItem('pvp_ai_chat') || '[]');
+    init() {
+        this.bindEvents();
+        this.showWelcome();
     }
     
-    save(messages) {
-        const limited = messages.slice(-30); // فقط 30 پیام آخر
-        localStorage.setItem('pvp_ai_chat', JSON.stringify(limited));
-    }
-    
-    clear() {
-        localStorage.removeItem('pvp_ai_chat');
-        this.history = [];
-    }
-}
-
-// کلاس مدیریت AI
-class AIAssistant {
-    constructor() {
-        this.storage = new ChatStorage();
-        this.isProcessing = false;
-        this.setupEventListeners();
-        this.loadHistory();
-    }
-    
-    setupEventListeners() {
-        // ارسال با Enter
-        document.getElementById('userInput')?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                this.sendMessage();
-            }
-        });
-    }
-    
-    loadHistory() {
-        const chatBox = document.getElementById('chatBox');
-        if (!chatBox) return;
-        
-        chatBox.innerHTML = '';
-        
-        // پیام خوش‌آمدگویی
-        if (this.storage.history.length === 0) {
-            this.addMessage('ai', 'سلام! من دستیار PvPPacks786 هستم. درباره پک‌های ماینکرافت می‌تونم راهنماییتون کنم!');
+    bindEvents() {
+        // دکمه ارسال
+        const sendBtn = document.getElementById('sendBtn');
+        if (sendBtn) {
+            sendBtn.addEventListener('click', () => this.sendMessage());
         }
         
-        // نمایش تاریخچه
-        this.storage.history.forEach(msg => {
-            this.addMessage(msg.role === 'user' ? 'user' : 'ai', msg.content, false);
-        });
+        // اینتر در input
+        const input = document.getElementById('userInput');
+        if (input) {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.sendMessage();
+                }
+            });
+        }
     }
     
-    addMessage(sender, content, save = true) {
+    showWelcome() {
+        if (this.messages.length === 0) {
+            this.addMessage('ai', 'سلام! 👋 من دستیار PvPPacks786 هستم. می‌تونم درباره پک‌های ماینکرافت راهنماییتون کنم!');
+        }
+    }
+    
+    async sendMessage() {
+        const input = document.getElementById('userInput');
+        const message = input.value.trim();
+        
+        if (!message) return;
+        
+        // نمایش پیام کاربر
+        this.addMessage('user', message);
+        input.value = '';
+        
+        // غیرفعال کردن دکمه
+        const btn = document.getElementById('sendBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        
+        try {
+            // دریافت پاسخ از DeepSeek
+            const response = await this.getDeepSeekResponse(message);
+            this.addMessage('ai', response);
+        } catch (error) {
+            console.error('خطا:', error);
+            // اگر API جواب نداد، نسخه آفلون
+            const offlineResponse = this.getOfflineResponse(message);
+            this.addMessage('ai', offlineResponse);
+        }
+        
+        // فعال کردن دکمه
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> ارسال';
+    }
+    
+    async getDeepSeekResponse(userMessage) {
+        // اگر API Key نداریم، آفلون پاسخ بده
+        if (!DEEPSEEK_API_KEY || DEEPSEEK_API_KEY === "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") {
+            return this.getOfflineResponse(userMessage);
+        }
+        
+        try {
+            const response = await fetch(DEEPSEEK_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "deepseek-chat",
+                    messages: [
+                        { role: "system", content: SYSTEM_PROMPT },
+                        { role: "user", content: userMessage }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 1000,
+                    stream: false
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.choices && data.choices[0]) {
+                return data.choices[0].message.content;
+            } else {
+                throw new Error('پاسخی دریافت نشد');
+            }
+            
+        } catch (error) {
+            console.error('خطای DeepSeek:', error);
+            // در صورت خطا، پاسخ آفلون بده
+            return this.getOfflineResponse(userMessage);
+        }
+    }
+    
+    getOfflineResponse(userMessage) {
+        const lower = userMessage.toLowerCase();
+        
+        // پاسخ‌های از پیش تعریف شده
+        if (lower.includes('سلام') || lower.includes('hi') || lower.includes('hello')) {
+            return 'سلام! 😊 من دستیار PvPPacks786 هستم. چطور می‌تونم در مورد پک‌های ماینکرافت کمکتون کنم؟';
+        }
+        
+        if (lower.includes('پک') && lower.includes('pvp')) {
+            return `🎮 **پک‌های PvP پیشنهادی:**\n\n1. **PvP Texture Pack 16x** - برای مبارزات سریع\n2. **Ultimate PvP Pack** - کامل با تمام ابزارها\n3. **Warzone Resource Pack** - گرافیک حماسی\n\n📥 دانلود از: https://s786mc.github.io/PvPPacks786/packs/page`;
+        }
+        
+        if (lower.includes('تلگرام') || lower.includes('telegram')) {
+            return `📱 **کانال تلگرام:**\n\nt.me/PvPPacks_786\n\nبرای دریافت جدیدترین پک‌ها عضو شوید!`;
+        }
+        
+        if (lower.includes('نصب') || lower.includes('install') || lower.includes('چطوری')) {
+            return `📦 **نحوه نصب پک:**\n\n1. پک را از اینجا دانلود کنید: https://s786mc.github.io/PvPPacks786/packs/page\n2. فایل را در پوشه resourcepacks قرار دهید\n3. بازی را اجرا کنید\n4. به Options → Resource Packs بروید\n5. پک را انتخاب و فعال کنید\n\n💡 برای راهنمایی بیشتر به تلگرام مراجعه کنید.`;
+        }
+        
+        if (lower.includes('مشکل') || lower.includes('خطا') || lower.includes('کار نمیکنه')) {
+            return `🔧 **مشکلات رایج:**\n\n• اگر پک لود نمی‌شود: فایل را دوباره دانلود کنید\n• اگر بازی کرش می‌کند: از پک‌های 16x استفاده کنید\n• اگر گرافیک درست نیست: OptiFine نصب کنید\n\n📞 برای پشتیبانی: t.me/PvPPacks_786`;
+        }
+        
+        if (lower.includes('وبسایت') || lower.includes('website')) {
+            return `🌐 **وبسایت PvPPacks786:**\n\n• صفحه اصلی: https://s786mc.github.io/PvPPacks786\n• همه پک‌ها: https://s786mc.github.io/PvPPacks786/packs/page\n• تلگرام: t.me/PvPPacks_786`;
+        }
+        
+        // پاسخ پیش‌فرض
+        return `سوال جالبی پرسیدید! درباره "${userMessage}"، می‌تونم بگم که:\n\n🔍 **پک‌های مرتبط را از اینجا ببینید:**\nhttps://s786mc.github.io/PvPPacks786/packs/page\n\n💬 **برای سوالات تخصصی:**\nt.me/PvPPacks_786\n\n🎮 **یا از من بپرسید:**\n• بهترین پک PvP کدام است؟\n• چطور پک نصب کنم؟\n• مشکل در اجرای پک دارم`;
+    }
+    
+    addMessage(sender, text) {
+        // ذخیره در تاریخچه
+        this.messages.push({ sender, text, time: new Date() });
+        localStorage.setItem('pvp_chat_history', JSON.stringify(this.messages));
+        
+        // نمایش در صفحه
+        this.displayMessage(sender, text);
+    }
+    
+    displayMessage(sender, text) {
         const chatBox = document.getElementById('chatBox');
         if (!chatBox) return;
         
@@ -114,164 +186,63 @@ class AIAssistant {
         messageDiv.innerHTML = `
             <div class="avatar">${sender === 'user' ? '👤' : '🤖'}</div>
             <div class="content">
-                <div class="message-header">
-                    <strong>${sender === 'user' ? 'شما' : 'PvPPacks786 AI'}</strong>
-                    <span class="time">${time}</span>
-                </div>
-                <div class="message-text">${this.formatContent(content)}</div>
+                <strong>${sender === 'user' ? 'شما' : 'PvPPacks786 AI'}</strong>
+                <span class="time">${time}</span>
+                <div class="text">${this.formatText(text)}</div>
             </div>
         `;
         
         chatBox.appendChild(messageDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
-        
-        if (save) {
-            this.storage.history.push({
-                role: sender === 'user' ? 'user' : 'assistant',
-                content: content
-            });
-            this.storage.save(this.storage.history);
-        }
     }
     
-    formatContent(text) {
+    formatText(text) {
         return text
             .replace(/\n/g, '<br>')
-            .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="link">$1</a>')
-            .replace(/t\.me\/([^\s]+)/g, '<a href="https://t.me/$1" target="_blank" class="link">t.me/$1</a>');
+            .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>')
+            .replace(/t\.me\/([^\s]+)/g, '<a href="https://t.me/$1" target="_blank">t.me/$1</a>');
     }
     
-    // دریافت پاسخ از API رایگان
-    async getAIResponse(userMessage) {
-        // اگر API Key تنظیم نشده، از نسخه آفلون استفاده کن
-        if (!ACTIVE_API.apiKey) {
-            return this.getOfflineResponse(userMessage);
-        }
-        
-        try {
-            const response = await fetch(ACTIVE_API.url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ACTIVE_API.apiKey}`
-                },
-                body: JSON.stringify({
-                    model: ACTIVE_API.model,
-                    messages: [
-                        { role: 'system', content: KNOWLEDGE.systemPrompt },
-                        { role: 'user', content: userMessage }
-                    ],
-                    temperature: 0.7,
-                    max_tokens: 500
-                })
+    loadMessages() {
+        const saved = localStorage.getItem('pvp_chat_history');
+        if (saved) {
+            this.messages = JSON.parse(saved);
+            this.messages.forEach(msg => {
+                this.displayMessage(msg.sender, msg.text);
             });
-            
-            if (!response.ok) {
-                throw new Error(`API Error: ${response.status}`);
-            }
-            
-            const data = await response.json();
-            return data.choices[0].message.content;
-            
-        } catch (error) {
-            console.error('خطا در ارتباط با API:', error);
-            // اگر API خطا داد، نسخه آفلون را برگردان
-            return this.getOfflineResponse(userMessage);
         }
-    }
-    
-    // پاسخ آفلون (همیشه کار می‌کند)
-    getOfflineResponse(userMessage) {
-        const lowerMsg = userMessage.toLowerCase();
-        
-        if (lowerMsg.includes('سلام') || lowerMsg.includes('hi')) {
-            return 'سلام! 👋 من دستیار PvPPacks786 هستم. چطور می‌تونم کمکتون کنم؟';
-        }
-        
-        if (lowerMsg.includes('پک') && lowerMsg.includes('pvp')) {
-            return `🎮 **پک‌های PvP پیشنهادی:**\n\n1. PvP Texture Pack 16x\n2. Ultimate PvP Pack\n3. Warzone Resource Pack\n\n📥 دانلود از: https://s786mc.github.io/PvPPacks786/packs/page`;
-        }
-        
-        if (lowerMsg.includes('تلگرام') || lowerMsg.includes('telegram')) {
-            return `📱 **کانال تلگرام:**\n\nt.me/PvPPacks_786\n\nبرای دریافت آخرین پک‌ها عضو شوید!`;
-        }
-        
-        if (lowerMsg.includes('نصب') || lowerMsg.includes('install')) {
-            return `📦 **نحوه نصب:**\n1. پک را از سایت دانلود کنید\n2. در پوشه resourcepacks قرار دهید\n3. در بازی: Options → Resource Packs\n4. پک را انتخاب و فعال کنید`;
-        }
-        
-        if (lowerMsg.includes('وبسایت') || lowerMsg.includes('website')) {
-            return `🌐 **وبسایت:**\nhttps://s786mc.github.io/PvPPacks786\n\n📚 **صفحه پک‌ها:**\nhttps://s786mc.github.io/PvPPacks786/packs/page`;
-        }
-        
-        return `سوال خوبی پرسیدید! درباره "${userMessage}"، می‌تونید:\n\n🔍 پک‌های مرتبط را از اینجا ببینید: https://s786mc.github.io/PvPPacks786/packs/page\n\n💬 یا در تلگرام بپرسید: t.me/PvPPacks_786`;
-    }
-    
-    async sendMessage() {
-        if (this.isProcessing) return;
-        
-        const input = document.getElementById('userInput');
-        const message = input.value.trim();
-        
-        if (!message) return;
-        
-        // غیرفعال کردن دکمه
-        const sendBtn = document.getElementById('sendBtn');
-        const originalText = sendBtn.innerHTML;
-        sendBtn.disabled = true;
-        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        
-        // نمایش پیام کاربر
-        this.addMessage('user', message);
-        input.value = '';
-        
-        this.isProcessing = true;
-        
-        try {
-            // دریافت پاسخ AI
-            const response = await this.getAIResponse(message);
-            
-            // نمایش پاسخ
-            this.addMessage('ai', response);
-            
-        } catch (error) {
-            console.error('خطا:', error);
-            this.addMessage('ai', 'متأسفم! خطایی رخ داد. لطفاً دوباره تلاش کنید.');
-        }
-        
-        // فعال کردن دکمه
-        sendBtn.disabled = false;
-        sendBtn.innerHTML = originalText;
-        this.isProcessing = false;
-    }
-    
-    quickQuestion(question) {
-        document.getElementById('userInput').value = question;
-        this.sendMessage();
     }
     
     clearChat() {
         if (confirm('آیا مطمئنید که می‌خواهید چت را پاک کنید؟')) {
-            this.storage.clear();
+            localStorage.removeItem('pvp_chat_history');
+            this.messages = [];
             const chatBox = document.getElementById('chatBox');
             if (chatBox) {
                 chatBox.innerHTML = '';
-                this.addMessage('ai', 'چت پاک شد! سوال جدید بپرسید.');
+                this.addMessage('ai', 'چت پاک شد! سوال جدید بپرسید. 😊');
             }
         }
     }
 }
 
-// راه‌اندازی برنامه
+// راه‌اندازی
 document.addEventListener('DOMContentLoaded', () => {
-    window.aiAssistant = new AIAssistant();
+    window.chatBot = new ChatSystem();
     
-    // توابع عمومی برای HTML
-    window.sendMessage = () => window.aiAssistant.sendMessage();
-    window.quickQuestion = (q) => window.aiAssistant.quickQuestion(q);
-    window.clearChat = () => window.aiAssistant.clearChat();
+    // توابع عمومی
+    window.sendMessage = () => window.chatBot.sendMessage();
+    window.clearChat = () => window.chatBot.clearChat();
     
-    console.log('✅ PvPPacks786 AI Assistant راه‌اندازی شد!');
-    console.log('📱 API فعال:', ACTIVE_API === FREE_APIS.DEEPSEEK ? 'DeepSeek' : 
-                ACTIVE_API === FREE_APIS.OPENROUTER ? 'OpenRouter' : 'Groq');
+    // دکمه‌های سریع
+    const quickBtns = document.querySelectorAll('.quick-btn');
+    quickBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const question = btn.textContent;
+            document.getElementById('userInput').value = question;
+            window.chatBot.sendMessage();
+        });
+    });
+    
+    console.log('🤖 PvPPacks786 AI Assistant آماده است!');
 });
