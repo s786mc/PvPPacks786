@@ -1,479 +1,277 @@
-// پایگاه دانش PvPPacks786
-const knowledgeBase = {
-    welcome: `سلام! من PvPPacks786 AI Assistant هستم. می‌تونم در مورد پک‌های ماینکرافت، نحوه نصب، مشکلات و هر سوال دیگه‌ای راهنماییتون کنم!`,
+// PvPPacks786 AI Assistant با API رایگان
+// =====================================
 
-    packs: {
-        pvp: "پک‌های PvP برای مبارزه Player vs Player طراحی شدن. بهترین پک‌ها شامل PvP Texture Pack, Ultra PvP Pack, و Warzone Pack هستن.",
-        texture: "پک‌های Texture ظاهر بازی رو تغییر می‌دن. پیشنهاد میکنم Texture Packs 16x یا 32x رو امتحان کنید.",
-        shader: "برای شیدر پک، Complementary Shaders یا BSL Shaders رو توصیه می‌کنم.",
-        utility: "پک‌های Utility شامل مواردی مثل Better UI, Inventory Tweaks, و OptiFine می‌شن.",
-        popular: [
-            "PvP Texture Pack 16x",
-            "Ultimate PvP Pack",
-            "Warzone Resource Pack",
-            "Combat Utilities Pack",
-            "SkyWars Texture Pack"
-        ]
+// انتخاب یکی از APIهای رایگان
+const FREE_APIS = {
+    // گزینه 1: DeepSeek API (رایگان، فارسی خوب)
+    DEEPSEEK: {
+        url: "https://api.deepseek.com/v1/chat/completions",
+        apiKey: "sk-dd47c77abbd542c39720181ffe2ffc56", // نیاز به ثبت‌نام در deepseek.com
+        model: "deepseek-chat"
     },
-
-    installation: `برای نصب پک:
-    1. پک مورد نظر رو از https://s786mc.github.io/PvPPacks786/packs/page دانلود کنید
-    2. فایل .zip یا .rar رو اکسترکت کنید
-    3. فایل .mcpack یا پوشه رو توی مسیر resourcepacks ماینکرافت قرار بدید
-    4. بازی رو اجرا کرده و از Options > Resource Packs پک رو فعال کنید`,
-
-    troubleshooting: {
-        notWorking: "اگر پک کار نمی‌کنه:\n- مطمئن شوید ماینکرافت آپدیت هست\n- فایل رو چک کنید که آسیب ندیده باشه\n- از OptiFine استفاده کنید\n- ورژن پک با ورژن بازی سازگار باشه",
-        lag: "اگر لگ دارید:\n- پک‌های 16x بجای 32x استفاده کنید\n- OptiFine نصب کنید\n- تنظیمات گرافیکی رو پایین بیارید\n- مودهای غیرضروری رو غیرفعال کنید"
-    },
-
-    links: {
-        packs: "https://s786mc.github.io/PvPPacks786/packs/page",
-        telegram: "t.me/PvPPacks_786",
-        website: "https://s786mc.github.io/PvPPacks786",
-        github: "https://github.com/s786mc/PvPPacks786"
-    },
-
-    capabilities: `من می‌تونم:
-    • پک مناسب رو پیشنهاد بدم
-    • نحوه نصب رو توضیح بدم
-    • مشکلات رو حل کنم
-    • درباره ویژگی‌های پک‌ها بگم
-    • به سوالات عمومی پاسخ بدم
     
-    اما نمی‌تونم:
-    • عکس یا ویدیو بسازم
-    • پک جدید ایجاد کنم
-    • فایل‌ها رو تغییر بدم
-    • به دیتابیس خارجی وصل بشم`
+    // گزینه 2: OpenRouter (رایگان با محدودیت)
+    OPENROUTER: {
+        url: "https://openrouter.ai/api/v1/chat/completions",
+        apiKey: "", // ثبت‌نام در openrouter.ai
+        model: "openai/gpt-3.5-turbo"
+    },
+    
+    // گزینه 3: Groq (خیلی سریع و رایگان)
+    GROQ: {
+        url: "https://api.groq.com/openai/v1/chat/completions",
+        apiKey: "", // ثبت‌نام در groq.com
+        model: "llama2-70b-4096"
+    }
+};
+
+// تنظیم API فعال
+const ACTIVE_API = FREE_APIS.DEEPSEEK; // یکی را انتخاب کن
+
+// پایگاه دانش PvPPacks786
+const KNOWLEDGE = {
+    systemPrompt: `تو PvPPacks786 AI Assistant هستی. فقط به فارسی پاسخ بده.
+محدودیت‌ها:
+- فقط متن تولید کن (بدون عکس/کد)
+- لینک‌های اصلی:
+  • پک‌ها: https://s786mc.github.io/PvPPacks786/packs/page
+  • تلگرام: t.me/PvPPacks_786
+  • وبسایت: https://s786mc.github.io/PvPPacks786
+
+اگر سوال درباره پک بود، راهنمایی کن و لینک صفحه پک‌ها را بده.
+اگر سوال درباره تلگرام بود، لینک کانال را بده.`
 };
 
 // سیستم ذخیره‌سازی
-class StorageManager {
+class ChatStorage {
     constructor() {
-        this.settingsKey = 'pvppacks_ai_settings';
-        this.chatHistoryKey = 'pvppacks_ai_chat_history';
-        this.statsKey = 'pvppacks_ai_stats';
+        this.history = this.load();
     }
-
-    // ذخیره تنظیمات
-    saveSettings(settings) {
-        localStorage.setItem(this.settingsKey, JSON.stringify(settings));
-        this.updateStorageInfo();
+    
+    load() {
+        return JSON.parse(localStorage.getItem('pvp_ai_chat') || '[]');
     }
-
-    // بارگذاری تنظیمات
-    loadSettings() {
-        const saved = localStorage.getItem(this.settingsKey);
-        return saved ? JSON.parse(saved) : {
-            userName: 'کاربر',
-            responseStyle: 'friendly',
-            notifications: true
-        };
+    
+    save(messages) {
+        const limited = messages.slice(-30); // فقط 30 پیام آخر
+        localStorage.setItem('pvp_ai_chat', JSON.stringify(limited));
     }
-
-    // ذخیره تاریخچه چت
-    saveChatHistory(history) {
-        localStorage.setItem(this.chatHistoryKey, JSON.stringify(history));
-        this.updateStats();
-        this.updateStorageInfo();
-    }
-
-    // بارگذاری تاریخچه چت
-    loadChatHistory() {
-        const saved = localStorage.getItem(this.chatHistoryKey);
-        return saved ? JSON.parse(saved) : [];
-    }
-
-    // آمار استفاده
-    updateStats() {
-        const today = new Date().toDateString();
-        const stats = JSON.parse(localStorage.getItem(this.statsKey) || '{}');
-        
-        if (!stats[today]) {
-            stats[today] = { messages: 0, questions: 0 };
-        }
-        
-        const history = this.loadChatHistory();
-        stats[today].messages = history.length;
-        stats[today].questions = history.filter(msg => msg.sender === 'user').length;
-        
-        localStorage.setItem(this.statsKey, JSON.stringify(stats));
-        
-        // آپدیت نمایش
-        this.displayTodayStats(stats[today]);
-    }
-
-    // نمایش آمار امروز
-    displayTodayStats(todayStats) {
-        const todayMessagesEl = document.getElementById('todayMessages');
-        if (todayMessagesEl && todayStats) {
-            todayMessagesEl.textContent = todayStats.questions || 0;
-        }
-    }
-
-    // اطلاعات حافظه
-    updateStorageInfo() {
-        let totalBytes = 0;
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            const value = localStorage.getItem(key);
-            totalBytes += key.length + value.length;
-        }
-        
-        const storageUsageEl = document.getElementById('storageUsage');
-        if (storageUsageEl) {
-            const kb = (totalBytes / 1024).toFixed(2);
-            storageUsageEl.textContent = `${kb} KB`;
-        }
-    }
-
-    // پاک کردن چت
-    clearChat() {
-        if (confirm('آیا مطمئن هستید که می‌خواهید تاریخچه چت را پاک کنید؟')) {
-            localStorage.removeItem(this.chatHistoryKey);
-            this.updateStorageInfo();
-            return true;
-        }
-        return false;
+    
+    clear() {
+        localStorage.removeItem('pvp_ai_chat');
+        this.history = [];
     }
 }
 
-// مدیریت چت
-class ChatManager {
-    constructor(storageManager) {
-        this.storage = storageManager;
-        this.chatHistory = [];
-        this.currentSettings = {};
-        this.initialize();
-    }
-
-    initialize() {
-        this.loadHistory();
-        this.loadSettings();
+// کلاس مدیریت AI
+class AIAssistant {
+    constructor() {
+        this.storage = new ChatStorage();
+        this.isProcessing = false;
         this.setupEventListeners();
-        this.updateTime();
-        setInterval(() => this.updateTime(), 60000); // آپدیت زمان هر دقیقه
+        this.loadHistory();
     }
-
-    loadHistory() {
-        this.chatHistory = this.storage.loadChatHistory();
-        this.displayHistory();
-    }
-
-    loadSettings() {
-        this.currentSettings = this.storage.loadSettings();
-        this.applySettings();
-    }
-
-    applySettings() {
-        // اعمال تنظیمات روی UI
-        const userNameInput = document.getElementById('userName');
-        const responseStyleSelect = document.getElementById('responseStyle');
-        
-        if (userNameInput) userNameInput.value = this.currentSettings.userName;
-        if (responseStyleSelect) responseStyleSelect.value = this.currentSettings.responseStyle;
-    }
-
+    
     setupEventListeners() {
-        // ذخیره تنظیمات
-        window.saveSettings = () => {
-            this.currentSettings = {
-                userName: document.getElementById('userName').value || 'کاربر',
-                responseStyle: document.getElementById('responseStyle').value,
-                notifications: true
-            };
-            this.storage.saveSettings(this.currentSettings);
-            this.showToast('تنظیمات ذخیره شد!', 'success');
-        };
-
-        // پاک کردن چت
-        window.clearChat = () => {
-            if (this.storage.clearChat()) {
-                this.chatHistory = [];
-                this.displayHistory();
-                this.addSystemMessage('چت پاک شد! می‌تونید سوال جدید بپرسید.');
-                this.showToast('تاریخچه چت پاک شد', 'info');
+        // ارسال با Enter
+        document.getElementById('userInput')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.sendMessage();
             }
-        };
-
-        // سوالات سریع
-        window.askQuestion = (question) => {
-            document.getElementById('userInput').value = question;
-            this.sendMessage();
-        };
-    }
-
-    updateTime() {
-        const timeElement = document.getElementById('currentTime');
-        if (timeElement) {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('fa-IR', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            timeElement.textContent = timeString;
-        }
-    }
-
-    displayHistory() {
-        const chatMessages = document.getElementById('chatMessages');
-        if (!chatMessages) return;
-
-        // پاک کردن پیام‌های فعلی (غیر از پیام خوش‌آمدگویی اولیه)
-        chatMessages.innerHTML = '';
-        
-        // اضافه کردن پیام خوش‌آمدگویی
-        this.addWelcomeMessage();
-        
-        // نمایش تاریخچه
-        this.chatHistory.forEach(message => {
-            this.displayMessage(message.sender, message.content, false);
         });
     }
-
-    addWelcomeMessage() {
-        const welcomeMessage = {
-            sender: 'ai',
-            content: knowledgeBase.welcome
-        };
-        this.displayMessage('ai', welcomeMessage.content);
+    
+    loadHistory() {
+        const chatBox = document.getElementById('chatBox');
+        if (!chatBox) return;
+        
+        chatBox.innerHTML = '';
+        
+        // پیام خوش‌آمدگویی
+        if (this.storage.history.length === 0) {
+            this.addMessage('ai', 'سلام! من دستیار PvPPacks786 هستم. درباره پک‌های ماینکرافت می‌تونم راهنماییتون کنم!');
+        }
+        
+        // نمایش تاریخچه
+        this.storage.history.forEach(msg => {
+            this.addMessage(msg.role === 'user' ? 'user' : 'ai', msg.content, false);
+        });
     }
-
-    addSystemMessage(text) {
-        const message = {
-            sender: 'ai',
-            content: text
-        };
-        this.displayMessage('ai', message.content);
-    }
-
-    displayMessage(sender, content, saveToHistory = true) {
-        const chatMessages = document.getElementById('chatMessages');
-        if (!chatMessages) return;
-
+    
+    addMessage(sender, content, save = true) {
+        const chatBox = document.getElementById('chatBox');
+        if (!chatBox) return;
+        
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}-message`;
         
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('fa-IR', {
+        const time = new Date().toLocaleTimeString('fa-IR', {
             hour: '2-digit',
             minute: '2-digit'
         });
         
-        const senderName = sender === 'user' 
-            ? this.currentSettings.userName 
-            : 'PvPPacks786 AI Assistant';
-        
-        const avatarIcon = sender === 'user' ? 'fas fa-user' : 'fas fa-robot';
-        
         messageDiv.innerHTML = `
-            <div class="message-avatar">
-                <i class="${avatarIcon}"></i>
-            </div>
-            <div class="message-content">
+            <div class="avatar">${sender === 'user' ? '👤' : '🤖'}</div>
+            <div class="content">
                 <div class="message-header">
-                    <span class="sender">${senderName}</span>
-                    <span class="time">${timeString}</span>
+                    <strong>${sender === 'user' ? 'شما' : 'PvPPacks786 AI'}</strong>
+                    <span class="time">${time}</span>
                 </div>
-                <div class="message-text">${this.formatMessage(content)}</div>
+                <div class="message-text">${this.formatContent(content)}</div>
             </div>
         `;
         
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
         
-        if (saveToHistory) {
-            this.chatHistory.push({ sender, content, timestamp: now });
-            this.storage.saveChatHistory(this.chatHistory);
+        if (save) {
+            this.storage.history.push({
+                role: sender === 'user' ? 'user' : 'assistant',
+                content: content
+            });
+            this.storage.save(this.storage.history);
         }
     }
-
-    formatMessage(text) {
-        // تبدیل لینک‌ها به تگ <a>
-        let formatted = text.replace(
-            /(https?:\/\/[^\s]+)/g, 
-            '<a href="$1" target="_blank" rel="noopener">$1</a>'
-        );
-        
-        // تبدیل خطوط جدید به <br>
-        formatted = formatted.replace(/\n/g, '<br>');
-        
-        // هایلایت کلمات کلیدی
-        const keywords = ['پک', 'ماینکرافت', 'PvP', 'Texture', 'نصب', 'خطا'];
-        keywords.forEach(keyword => {
-            const regex = new RegExp(`(${keyword})`, 'gi');
-            formatted = formatted.replace(regex, '<strong>$1</strong>');
-        });
-        
-        return formatted;
+    
+    formatContent(text) {
+        return text
+            .replace(/\n/g, '<br>')
+            .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="link">$1</a>')
+            .replace(/t\.me\/([^\s]+)/g, '<a href="https://t.me/$1" target="_blank" class="link">t.me/$1</a>');
     }
-
-    processUserMessage(message) {
-        const lowerMessage = message.toLowerCase();
-        
-        // شناسایی نوع سوال
-        if (lowerMessage.includes('سلام') || lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
-            return `سلام ${this.currentSettings.userName}! چطور می‌تونم کمکتون کنم؟ 😊`;
+    
+    // دریافت پاسخ از API رایگان
+    async getAIResponse(userMessage) {
+        // اگر API Key تنظیم نشده، از نسخه آفلون استفاده کن
+        if (!ACTIVE_API.apiKey) {
+            return this.getOfflineResponse(userMessage);
         }
         
-        if (lowerMessage.includes('تشکر') || lowerMessage.includes('ممنون')) {
-            return `خواهش می‌کنم ${this.currentSettings.userName}! خوشحالم که می‌تونم کمک کنم. اگر سوال دیگه‌ای دارید در خدمتم.`;
-        }
-        
-        if (lowerMessage.includes('پک') && lowerMessage.includes('pvp')) {
-            return `${knowledgeBase.packs.pvp}\n\nبرای دیدن لیست کامل پک‌های PvP، به ${knowledgeBase.links.packs} مراجعه کنید.`;
-        }
-        
-        if (lowerMessage.includes('پک') && lowerMessage.includes('texture')) {
-            return `${knowledgeBase.packs.texture}\n\nپک‌های Texture رو می‌تونید از ${knowledgeBase.links.packs} دانلود کنید.`;
-        }
-        
-        if (lowerMessage.includes('نصب') || lowerMessage.includes('install')) {
-            return `📦 ${knowledgeBase.installation}`;
-        }
-        
-        if (lowerMessage.includes('تلگرام') || lowerMessage.includes('telegram')) {
-            return `کانال تلگرام ما:\n${knowledgeBase.links.telegram}\n\nدر این کانال جدیدترین پک‌ها و آپدیت‌ها رو منتشر می‌کنیم.`;
-        }
-        
-        if (lowerMessage.includes('وبسایت') || lowerMessage.includes('website')) {
-            return `وبسایت رسمی PvPPacks786:\n${knowledgeBase.links.website}\n\nهمه پک‌ها در ${knowledgeBase.links.packs} قابل دسترسی هستند.`;
-        }
-        
-        if (lowerMessage.includes('مشکل') || lowerMessage.includes('خطا') || lowerMessage.includes('کار نمیکنه')) {
-            return `🔧 راه‌حل‌های رایج:\n\n${knowledgeBase.troubleshooting.notWorking}\n\n${knowledgeBase.troubleshooting.lag}`;
-        }
-        
-        if (lowerMessage.includes('چی میتونی') || lowerMessage.includes('توانایی')) {
-            return knowledgeBase.capabilities;
-        }
-        
-        if (lowerMessage.includes('محبوب') || lowerMessage.includes('بهترین')) {
-            const popularPacks = knowledgeBase.packs.popular.map((pack, index) => 
-                `${index + 1}. ${pack}`
-            ).join('\n');
+        try {
+            const response = await fetch(ACTIVE_API.url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ACTIVE_API.apiKey}`
+                },
+                body: JSON.stringify({
+                    model: ACTIVE_API.model,
+                    messages: [
+                        { role: 'system', content: KNOWLEDGE.systemPrompt },
+                        { role: 'user', content: userMessage }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 500
+                })
+            });
             
-            return `🎮 محبوب‌ترین پک‌های ما:\n\n${popularPacks}\n\nهمه این پک‌ها رو می‌تونید از ${knowledgeBase.links.packs} دانلود کنید.`;
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            return data.choices[0].message.content;
+            
+        } catch (error) {
+            console.error('خطا در ارتباط با API:', error);
+            // اگر API خطا داد، نسخه آفلون را برگردان
+            return this.getOfflineResponse(userMessage);
+        }
+    }
+    
+    // پاسخ آفلون (همیشه کار می‌کند)
+    getOfflineResponse(userMessage) {
+        const lowerMsg = userMessage.toLowerCase();
+        
+        if (lowerMsg.includes('سلام') || lowerMsg.includes('hi')) {
+            return 'سلام! 👋 من دستیار PvPPacks786 هستم. چطور می‌تونم کمکتون کنم؟';
         }
         
-        // پاسخ پیش‌فرض
-        return `سوال جالبی پرسیدید! در مورد "${message}"، می‌تونم بگم که:\n\n` +
-               `• می‌تونید پک‌های مرتبط رو از ${knowledgeBase.links.packs} پیدا کنید\n` +
-               `• اگر مشکل نصب دارید، راهنمای نصب رو مطالعه کنید\n` +
-               `• برای پشتیبانی بیشتر به ${knowledgeBase.links.telegram} سر بزنید\n\n` +
-               `آیا سوال خاص‌تری در مورد پک‌ها دارید؟`;
-    }
-
-    showToast(message, type = 'info') {
-        // ایجاد عنصر toast
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
-            color: white;
-            padding: 12px 24px;
-            border-radius: 5px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 10000;
-            animation: slideDown 0.3s ease;
-        `;
+        if (lowerMsg.includes('پک') && lowerMsg.includes('pvp')) {
+            return `🎮 **پک‌های PvP پیشنهادی:**\n\n1. PvP Texture Pack 16x\n2. Ultimate PvP Pack\n3. Warzone Resource Pack\n\n📥 دانلود از: https://s786mc.github.io/PvPPacks786/packs/page`;
+        }
         
-        document.body.appendChild(toast);
+        if (lowerMsg.includes('تلگرام') || lowerMsg.includes('telegram')) {
+            return `📱 **کانال تلگرام:**\n\nt.me/PvPPacks_786\n\nبرای دریافت آخرین پک‌ها عضو شوید!`;
+        }
         
-        // حذف پس از 3 ثانیه
-        setTimeout(() => {
-            toast.style.animation = 'slideUp 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
+        if (lowerMsg.includes('نصب') || lowerMsg.includes('install')) {
+            return `📦 **نحوه نصب:**\n1. پک را از سایت دانلود کنید\n2. در پوشه resourcepacks قرار دهید\n3. در بازی: Options → Resource Packs\n4. پک را انتخاب و فعال کنید`;
+        }
+        
+        if (lowerMsg.includes('وبسایت') || lowerMsg.includes('website')) {
+            return `🌐 **وبسایت:**\nhttps://s786mc.github.io/PvPPacks786\n\n📚 **صفحه پک‌ها:**\nhttps://s786mc.github.io/PvPPacks786/packs/page`;
+        }
+        
+        return `سوال خوبی پرسیدید! درباره "${userMessage}"، می‌تونید:\n\n🔍 پک‌های مرتبط را از اینجا ببینید: https://s786mc.github.io/PvPPacks786/packs/page\n\n💬 یا در تلگرام بپرسید: t.me/PvPPacks_786`;
     }
-
-    sendMessage() {
+    
+    async sendMessage() {
+        if (this.isProcessing) return;
+        
         const input = document.getElementById('userInput');
         const message = input.value.trim();
         
         if (!message) return;
         
-        // غیرفعال کردن دکمه ارسال
+        // غیرفعال کردن دکمه
         const sendBtn = document.getElementById('sendBtn');
+        const originalText = sendBtn.innerHTML;
         sendBtn.disabled = true;
-        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال پردازش';
+        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         
         // نمایش پیام کاربر
-        this.displayMessage('user', message);
-        
-        // پاک کردن ورودی
+        this.addMessage('user', message);
         input.value = '';
-        this.autoResize(input);
         
-        // نمایش ایندیکیتور تایپینگ
-        const typingIndicator = document.getElementById('typingIndicator');
-        typingIndicator.classList.add('active');
+        this.isProcessing = true;
         
-        // شبیه‌سازی تاخیر پردازش
-        setTimeout(() => {
-            // تولید پاسخ
-            const response = this.processUserMessage(message);
-            
-            // مخفی کردن ایندیکیتور تایپینگ
-            typingIndicator.classList.remove('active');
+        try {
+            // دریافت پاسخ AI
+            const response = await this.getAIResponse(message);
             
             // نمایش پاسخ
-            this.displayMessage('ai', response);
+            this.addMessage('ai', response);
             
-            // فعال کردن دکمه ارسال
-            sendBtn.disabled = false;
-            sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ارسال';
-        }, 1500);
+        } catch (error) {
+            console.error('خطا:', error);
+            this.addMessage('ai', 'متأسفم! خطایی رخ داد. لطفاً دوباره تلاش کنید.');
+        }
+        
+        // فعال کردن دکمه
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = originalText;
+        this.isProcessing = false;
     }
-}
-
-// توابع کمکی عمومی
-function autoResize(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = (textarea.scrollHeight) + 'px';
-}
-
-function handleKeyDown(event) {
-    if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        window.chatManager.sendMessage();
+    
+    quickQuestion(question) {
+        document.getElementById('userInput').value = question;
+        this.sendMessage();
+    }
+    
+    clearChat() {
+        if (confirm('آیا مطمئنید که می‌خواهید چت را پاک کنید؟')) {
+            this.storage.clear();
+            const chatBox = document.getElementById('chatBox');
+            if (chatBox) {
+                chatBox.innerHTML = '';
+                this.addMessage('ai', 'چت پاک شد! سوال جدید بپرسید.');
+            }
+        }
     }
 }
 
 // راه‌اندازی برنامه
 document.addEventListener('DOMContentLoaded', () => {
-    // اضافه کردن استایل برای toast
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideDown {
-            from { transform: translate(-50%, -100%); opacity: 0; }
-            to { transform: translate(-50%, 0); opacity: 1; }
-        }
-        @keyframes slideUp {
-            from { transform: translate(-50%, 0); opacity: 1; }
-            to { transform: translate(-50%, -100%); opacity: 0; }
-        }
-    `;
-    document.head.appendChild(style);
+    window.aiAssistant = new AIAssistant();
     
-    // مقداردهی اولیه
-    const storageManager = new StorageManager();
-    window.chatManager = new ChatManager(storageManager);
+    // توابع عمومی برای HTML
+    window.sendMessage = () => window.aiAssistant.sendMessage();
+    window.quickQuestion = (q) => window.aiAssistant.quickQuestion(q);
+    window.clearChat = () => window.aiAssistant.clearChat();
     
-    // تنظیم توابع global
-    window.autoResize = autoResize;
-    window.handleKeyDown = handleKeyDown;
-    window.sendMessage = () => window.chatManager.sendMessage();
-    
-    // آپدیت اطلاعات حافظه
-    storageManager.updateStorageInfo();
-    storageManager.updateStats();
-    
-    console.log('🤖 PvPPacks786 AI Assistant راه‌اندازی شد!');
+    console.log('✅ PvPPacks786 AI Assistant راه‌اندازی شد!');
+    console.log('📱 API فعال:', ACTIVE_API === FREE_APIS.DEEPSEEK ? 'DeepSeek' : 
+                ACTIVE_API === FREE_APIS.OPENROUTER ? 'OpenRouter' : 'Groq');
 });
