@@ -131,13 +131,64 @@ font-family: 'mcbold';
     font-family: 'Mikhak';
     src: url('./fonts/Mikhak.ttf') format('truetype');
 }
-.packs-help  {
-  color: orange;
-  text-align: center;
-}
-.packs-help:active  {
-  color: withe;
-  text-align: right;
-}
+
 p  {
   font-family: "Mikhak";
+.packs-help-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0;
+  flex-wrap: nowrap; /* مهم: کنار هم بمانند */
+  box-sizing: border-box;
+}
+
+/* دکمه‌ها: هر کدام دقیقاً نصف عرض کانتینر */
+.packs-help {
+  color: #B97B1E;
+  background-color: #FFC05A;
+  border-radius: 20px;
+  border: 2px solid orange;
+  padding: 12px 18px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Mikhak", "Mehr", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 48px;
+
+  /* این دو خط باعث می‌شود دقیقاً نصف شوند */
+  flex: 0 0 50%;
+  max-width: 50%;
+  box-sizing: border-box;
+}
+
+/* افکت ها هنگام هاور و فوکوس */
+.packs-help:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  background-color: #ffdf8f;
+}
+.packs-help:active { transform: translateY(-1px); }
+.packs-help:focus {
+  outline: 3px solid rgba(185,123,30,0.18);
+  outline-offset: 3px;
+}
+
+/* اگر فقط یک دکمه داخل کانتینر باشد، آن را جمع و جورتر کن */
+.packs-help-row.single .packs-help {
+  max-width: 360px;
+  flex: 0 0 auto;
+}
+
