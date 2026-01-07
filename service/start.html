@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#ff8a00" id="meta-theme-color" />
+  <title>Home (خالی) - Phone UI</title>
+  <style>
+    :root{
+      --bg: #fff;
+      --surface: #fff;
+      --text: #222;
+      --accent: #ff8a00;
+      --shadow: 0 6px 18px rgba(0,0,0,0.12);
+      --radius: 18px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg: linear-gradient(180deg,#0f0f10,#0b0b0c);
+        --surface: #0b0b0c;
+        --text: #eee;
+        --shadow: 0 8px 24px rgba(0,0,0,0.6);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+
+    .phone{
+      width:100%;
+      max-width:420px;
+      height:calc(100vh - 36px);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+      border:1px solid rgba(0,0,0,0.06);
+    }
+
+    .status{
+      padding:12px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    }
+    .status .title{font-weight:600}
+
+    .grid-wrap{
+      padding:16px;
+      flex:1;
+      overflow:auto;
+    }
+
+    .apps-grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:14px;
+      justify-items:center;
+      align-items:start;
+      min-height:220px; /* فضای اولیه خالی */
+      padding-top:8px;
+    }
+    @media (max-width:360px){
+      .apps-grid{grid-template-columns: repeat(3, 1fr)}
+    }
+
+    /* استایل پایه آیکون (برای زمانی که خودت اضافه می‌کنی) */
+    .app{
+      width:84px;
+      height:110px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      color:var(--text);
+      background:none;
+      border:0;
+      object-fit: cover;
+      width: 56px;
+      height: 56px;
+    }
+    .icon{
+      width:72px;
+      height:72px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 6px 12px rgba(0,0,0,0.08);
+      transition:transform .12s ease;
+      overflow:hidden;
+      object-fit: cover;
+    }
+    .label{font-size:13px; text-align:center; width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding:0 6px}
+
+    .dock{
+      padding:10px 14px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      border-top:1px solid rgba(0,0,0,0.04);
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,0.02));
+    }
+
+    /* نمونه کارت */
+    .sample-card{
+      background:linear-gradient(180deg, rgba(255,138,0,0.08), rgba(255,138,0,0.02));
+      border-radius:12px;
+      padding:12px;
+      box-shadow:0 6px 14px rgba(0,0,0,0.06);
+      color:var(--text);
+    }
+    .sample-card h4{margin:0 0 8px 0}
+    .sample-card p{margin:0; font-size:14px; opacity:0.95}
+
+    /* اسکرول */
+    .grid-wrap::-webkit-scrollbar{width:8px}
+    .grid-wrap::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12); border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="phone" role="application" aria-label="Home screen">
+    <div class="status">
+      <div class="title" dir="ltr"><div dir="rtl">Services</div></div>
+      <div class="icons" aria-hidden="true"></div>
+    </div>
+
+    <div class="grid-wrap">
+      <div class="apps-grid" id="appsGrid">
+        <!-- اینجا خالی است؛ خودت می‌توانی با HTML یا JS آیکون اضافه کنی -->
+        <a class="app" href="#dashboard">
+  <div class="icon">
+    <img src="https://server-website.github.io/the_web/file/img/download.webp" alt="💥" class="icon">
+  </div>
+  <span class="label">Search</span>
+        </a>
+      </div>
+
+      <hr style="margin:18px 0; border:none; border-top:1px solid rgba(0,0,0,0.06)">
+
+      <!-- نمونه کارت: کپی کن و در هر جایی از صفحه قرار بده -->
+      <div style="display:grid; gap:12px;">
+        <div class="sample-card" id="sampleCard1" role="region" aria-label="نمونه کارت">
+          <h4>خدمات PvPPacks</h4>
+          <p><strong>
+            از خدمات ما به صورت رایگان استفاده کنید.
+          </strong></p>
+        </div>
+
+        <div class="sample-card" id="sampleCard2" role="region" aria-label="نمونه کارت ۲">
+         <a href="../index"
+           style="
+      color: orange;
+           font-size: 1.3rem;
+           text-decoration: none;
+           "
+           ><strong>بازگشت</strong>
+         به صفحه اصلی
+         </a>
+         
+        </div>
+      </div>
+    </div>
+
+    <div class="dock" aria-hidden="true">
+      <!-- داک خالی؛ خودت می‌تونی آیتم اضافه کنی -->
+    </div>
+  </div>
+
+  <script>
+    /* نمونه: تابع کمکی برای افزودن آیکون با JS
+       استفاده: addApp({label:'My App', iconUrl:'path/to.png', link:'#dashboard'})
