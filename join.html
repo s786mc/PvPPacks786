@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PvPPacks | loading...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .countdown {
+            font-size: 18px;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .info-box {
+            background: #f0f8ff;
+            border-right: 5px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: right;
+            display: none;
+        }
+        
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .info-box p {
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .error {
+            background: #ffeaea;
+            border-right: 5px solid #ff4444;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: #d32f2f;
+            text-align: right;
+            display: none;
+        }
+        
+        .link-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: monospace;
+            word-break: break-all;
+            text-align: right;
+            direction: ltr;
+        }
+        
+        .examples {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: right;
+            font-size: 14px;
+        }
+        
+        .examples ul {
+            list-style: none;
+            padding-right: 20px;
+        }
+        
+        .examples li {
+            margin: 5px 0;
+            color: #666;
+        }
+        
+        .examples code {
+            background: #eef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>درحال انتقال</h1>
+        <p class="subtitle">لطفاً چند لحظه صبر کنید...</p>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div class="countdown" id="countdown">۲</div>
+            <p>در حال انتقال به مقصد مورد نظر</p>
+        </div>
+        
+        <div class="info-box" id="infoBox">
+            <h3>📢 توجه ویژه</h3>
+            <p>این کانال صرفاً به عنوان پشتیبان فعالیت می‌کند و محتوای اصلی در آن قرار نمی‌گیرد. اما توصیه می‌شود برای اطمینان از دسترسی در صورت بروز اختلال اینترنتی در کشور، در این کانال نیز عضو شوید.</p>
+        </div>
+        
+        <div class="error" id="errorBox">
+            <p>مقدار وارد شده معتبر نمی‌باشد!</p>
+            <p>لطفاً از لینک اصلی استفاده کنید.</p>
+            <div class="examples">
+                <p><strong>مقادیر معتبر:</strong></p>
+                <ul>
+                    <li><code>telegram.channel</code> → کانال تلگرام</li>
+                    <li><code>telegram.group</code> → گروه تلگرام</li>
+                    <li><code>chatzy.channel</code> → کانال چتزی</li>
+                    <li><code>chatzy.group</code> → گروه چتزی</li>
+                    <li><code>rubika.canal</code> → کانال روبیکا</li>
+                    <li><code>rubika.groh</code> → گروه روبیکا</li>
+                    <li><code>splus.getPoshtiban</code> → کانال پشتیبان در سروش‌پلاس</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="link-display" id="linkDisplay"></div>
+        
+        <a href="#" class="btn" id="manualBtn" style="display: none;">🎯 انتقال مستقیم</a>
+    </div>
+
+    <script>
+        // تعریف مقادیر مجاز و لینک‌های مربوطه (با نام‌های کوتاه)
+        const validLinks = {
+            // تلگرام
+            'telegram.channel': {
+                url: 'https://t.me/PvPPacks_786',
+                title: 'کانال تلگرام'
+            },
+            'telegram.group': {
+                url: 'https://t.me/ppp_play',
+                title: 'گروه تلگرام'
+            },
+            
+            // چتزی
+            'chatzy.channel': {
+                url: 'https://t.chatzy.ir/PvPPacks',
+                title: 'کانال چتزی'
+            },
+            'chatzy.group': {
+                url: 'https://t.chatzy.ir/ppp_play',
+                title: 'گروه چتزی'
+            },
+            
+            // روبیکا
+            'rubika.canal': {
+                url: 'https://rubika.ir/Packs_bedrockjava',
+                title: 'کانال روبیکا'
+            },
+            'rubika.groh': {
+                url: 'https://rubika.ir/joing/+JBBIDGHD0EMIAMEQBSBEJMMWORPTUNVK',
+                title: 'گروه روبیکا'
+            },
+            
+            // اس‌پلاس (مورد خاص)
+            'splus.getPoshtiban': {
+                url: 'https://splus.ir/Pvppacks',
+                title: 'کانال پشتیبان اس‌پلاس',
+                isBackup: true
+            }
+        };
+
+        // دریافت پارامتر از URL
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // تشخیص مقدار و هدایت
+        function processRequest() {
+            // دریافت مقدار از پارامتر "to"
+            const joinType = getUrlParameter('to');
+            const loadingDiv = document.getElementById('loading');
+            const errorBox = document.getElementById('errorBox');
+            const infoBox = document.getElementById('infoBox');
+            const linkDisplay = document.getElementById('linkDisplay');
+            const manualBtn = document.getElementById('manualBtn');
+            const countdownElement = document.getElementById('countdown');
+            const subtitle = document.querySelector('.subtitle');
+            
+            // نمایش loading
+            loadingDiv.style.display = 'flex';
+            
+            // بررسی وجود مقدار معتبر
+            if (joinType && validLinks.hasOwnProperty(joinType)) {
+                const targetData = validLinks[joinType];
+                const targetUrl = targetData.url;
+                
+                // نمایش اطلاعات
+                linkDisplay.innerHTML = `
+                    <strong>مقصد:</strong> ${targetData.title}<br>
+                    <strong>لینک:</strong> ${targetUrl}
+                `;
+                
+                subtitle.textContent = `در حال هدایت به ${targetData.title}...`;
+                
+                // نمایش اطلاعات اضافی برای Splus (پشتیبان)
+                if (targetData.isBackup) {
+                    infoBox.style.display = 'block';
+                    manualBtn.style.display = 'inline-block';
+                    manualBtn.href = targetUrl;
+                    manualBtn.textContent = `🎯 رفتن به ${targetData.title}`;
+                    
+                    // برای پشتیبان، هدایت خودکار انجام نمی‌شود
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = '۰';
+                    subtitle.textContent = 'لطفاً به صورت دستی اقدام کنید';
+                    return;
+                }
+                
+                // شمارش معکوس ۲ ثانیه
+                let countdown = 2;
+                countdownElement.textContent = countdown;
+                
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        window.location.href = targetUrl;
+                    }
+                }, 1000);
+                
+                // دکمه انتقال دستی
+                manualBtn.style.display = 'inline-block';
+                manualBtn.href = targetUrl;
+                manualBtn.textContent = `🎯 انتقال سریع به ${targetData.title}`;
+                
+            } else {
+                // نمایش خطا
+                loadingDiv.style.display = 'none';
+                errorBox.style.display = 'block';
+                linkDisplay.innerHTML = `<strong>مقدار دریافت شده:</strong> ${joinType || 'هیچ مقداری یافت نشد'}`;
+                subtitle.textContent = 'مشکلی در هدایت به وجود آمده است';
+            }
+        }
+
+        // اجرای اسکریپت پس از لود صفحه
+        document.addEventListener('DOMContentLoaded', processRequest);
+    </script>
+</body>
+</html>
