@@ -1,184 +1,131 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#ff8a00" id="meta-theme-color" />
-  <title>PvPPacks_786 Services</title>
-  <style>
-    :root{
-      --bg: #fff;
-      --surface: #fff;
-      --text: #222;
-      --accent: #ff8a00;
-      --shadow: 0 6px 18px rgba(0,0,0,0.12);
-      --radius: 18px;
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg: linear-gradient(180deg,#0f0f10,#0b0b0c);
-        --surface: #0b0b0c;
-        --text: #eee;
-        --shadow: 0 8px 24px rgba(0,0,0,0.6);
-      }
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background:var(--bg);
-      color:var(--text);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خدمات PVPPACKS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Vazirmatn', sans-serif;
+        }
 
-    .phone{
-      width:100%;
-      max-width:420px;
-      height:calc(100vh - 36px);
-      border-radius:26px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
-      border:1px solid rgba(0,0,0,0.06);
-    }
+        body {
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
 
-    .status{
-      padding:12px 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-    }
-    .status .title{font-weight:600}
+        h1 {
+            color: #fff;
+            margin-bottom: 40px;
+            text-align: center;
+        }
 
-    .grid-wrap{
-      padding:16px;
-      flex:1;
-      overflow:auto;
-    }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
 
-    .apps-grid{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:14px;
-      justify-items:center;
-      align-items:start;
-      min-height:220px; /* فضای اولیه خالی */
-      padding-top:8px;
-    }
-    @media (max-width:360px){
-      .apps-grid{grid-template-columns: repeat(3, 1fr)}
-    }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-    /* استایل پایه آیکون (برای زمانی که خودت اضافه می‌کنی) */
-    .app{
-      width:84px;
-      height:110px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      color:var(--text);
-      background:none;
-      border:0;
-      object-fit: cover;
-      width: 56px;
-      height: 56px;
-    }
-    .icon{
-      width:72px;
-      height:72px;
-      border-radius:16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 6px 12px rgba(0,0,0,0.08);
-      transition:transform .12s ease;
-      overflow:hidden;
-      object-fit: cover;
-    }
-    .label{font-size:13px; text-align:center; width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding:0 6px}
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
 
-    .dock{
-      padding:10px 14px;
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      border-top:1px solid rgba(0,0,0,0.04);
-      background:linear-gradient(180deg, transparent, rgba(0,0,0,0.02));
-    }
+        .card img {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
 
-    /* نمونه کارت */
-    .sample-card{
-      background:linear-gradient(180deg, rgba(255,138,0,0.08), rgba(255,138,0,0.02));
-      border-radius:12px;
-      padding:12px;
-      box-shadow:0 6px 14px rgba(0,0,0,0.06);
-      color:var(--text);
-    }
-    .sample-card h4{margin:0 0 8px 0}
-    .sample-card p{margin:0; font-size:14px; opacity:0.95}
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
 
-    /* اسکرول */
-    .grid-wrap::-webkit-scrollbar{width:8px}
-    .grid-wrap::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12); border-radius:8px}
-  </style>
+        .card p {
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 30px 10px;
+            }
+
+            .card h3 {
+                font-size: 1.1rem;
+            }
+
+            .card p {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="phone" role="application" aria-label="Home screen">
-    <div class="status">
-      <div class="title" dir="ltr"><div dir="rtl">Services</div></div>
-      <div class="icons" aria-hidden="true"></div>
-    </div>
 
-    <div class="grid-wrap">
-      <div class="apps-grid" id="appsGrid">
-        <!-- اینجا خالی است؛ خودت می‌توانی با HTML یا JS آیکون اضافه کنی -->
-        <a class="app" href="../search/start.d">
-  <div class="icon">
-    <img src="https://server-website.github.io/the_web/file/img/download.webp" alt="💥" class="icon">
-  </div>
-  <span class="label">Search</span>
-        </a>
-      </div>
+    <h1>PvPPacks Services</h1>
 
-      <hr style="margin:18px 0; border:none; border-top:1px solid rgba(0,0,0,0.06)">
+    <div class="cards-container">
 
-      <!-- نمونه کارت: کپی کن و در هر جایی از صفحه قرار بده -->
-      <div style="display:grid; gap:12px;">
-        <div class="sample-card" id="sampleCard1" role="region" aria-label="نمونه کارت">
-          <h4>خدمات PvPPacks</h4>
-          <p><strong>
-            از خدمات ما به صورت رایگان استفاده کنید.
-          </strong></p>
+        <div class="card">
+            <img src="" alt="خدمت ۱">
+            <h3>جستجوی در اینترنت+امن</h3>
+            <p>درباره  هرچیزی مثل ریسورس پک در سراسر اینترنت جستجو کنید!</p>
+            <a href="../search/start.d" class="glass-btn">جستجو در سراسر اینترنت</a>
         </div>
 
-        <div class="sample-card" id="sampleCard2" role="region" aria-label="نمونه کارت ۲">
-         <a href="../index"
-           style="
-      color: orange;
-           font-size: 1.3rem;
-           text-decoration: none;
-           "
-           ><strong>بازگشت</strong>
-         به صفحه اصلی
-         </a>
-         
+        <div class="card">
+            <img src="https://via.placeholder.com/200x150" alt="خدمت ۲">
+            <h3>ساخت فایل manifest.json</h3>
+            <p>اگه ریسورس پک درست میکنی به این فایل نیاز داری و اگه کدنویسی برات سخته یا میخوای راه اسون تر رو پیش بری از این خدمت استفاده کن!</p>
+            <a href="./create.manifest.json" class="glass-btn">ساخت فایل</a>
         </div>
-      </div>
+
+        
+
     </div>
 
-    <div class="dock" aria-hidden="true">
-      <!-- داک خالی؛ خودت می‌تونی آیتم اضافه کنی -->
-    </div>
-  </div>
-
-  <script>
-    /* نمونه: تابع کمکی برای افزودن آیکون با JS
-       استفاده: addApp({label:'My App', iconUrl:'path/to.png', link:'#dashboard'})
+</body>
+</html>
