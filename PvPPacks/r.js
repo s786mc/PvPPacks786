@@ -15,10 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (user && user.name) {
             // کاربر لاگین کرده → صفحه خدمات
-            window.location.href = "https://s786mc.github.io/PvPPacks786/service/start.html";
+            window.location.href = "https://s786mc.github.io/PvPPacks/service/start.html";
         } else {
             // کاربر مهمان → صفحه لاگین
-            window.location.href = "https://s786mc.github.io/PvPPacks786/login.html";
+            window.location.href = "https://s786mc.github.io/PvPPacks/login.html";
         }
     };
 });
