@@ -1,67 +1,194 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta lang="fa">
-  <link rel="stylesheet" href="../styles.css">
-<link rel="stylesheet" href="../fonts/Mikhak-template.css">
-  <style>
-* { font-family: 'Mikhak'; }
-.cop  {
-padding: 4rem; margin:0rem; 
-}
-</style>
-    <title>
-PvPPacks_786
-</title>
-<!-- این رو توی <head> بذار -->
-<meta name="theme-color" content="#ff5500">
-
-<link rel="stylesheet" href="../PvPPacks/OffWarn.css">
+    <meta lang="fa">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../fonts/Mikhak-template.css">
+    <style>
+        * { font-family: 'Mikhak'; }
+        .cop {
+            padding: 2rem; 
+            margin: 0rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            justify-items: center;
+        }
+        
+        /* استایل کارت پک‌ها */
+        .pack-card {
+            width: 100%;
+            max-width: 280px;
+            background: linear-gradient(145deg, #2d3748, #4a5568);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 2px solid #4a5568;
+        }
+        
+        .pack-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(255, 85, 0, 0.2);
+            border-color: #ff5500;
+        }
+        
+        .pack-image {
+            width: 100%;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .pack-name {
+            padding: 20px 15px;
+            text-align: center;
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .pack-name a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: block;
+            transition: color 0.3s;
+        }
+        
+        .pack-name a:hover {
+            color: #ff5500;
+        }
+        
+        .pack-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff5500;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        /* استایل برای دکمه‌های قدیمی */
+        .dokme {
+            display: none; /* مخفی کردن دکمه‌های قدیمی */
+        }
+        
+        @media (max-width: 768px) {
+            .cop {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+                padding: 1rem;
+            }
+        }
+    </style>
+    <title>PvPPacks_786</title>
+    <meta name="theme-color" content="#ff5500">
+    <link rel="stylesheet" href="../PvPPacks/OffWarn.css">
 </head>
 <body>
     <header class="header">
-
         <div class="header-text">@PvPPacks_786</div>
     </header>
     
     <section class="diagonal-section">
         <div class="content">
-          <strong> <p class="tro">
-        <br>
-            </p></strong> <br>
-        <h1 style=" font-size: 2.8rem; text-align: center; ">
-          لیست پک ها:
-        </h1>
-          </p>
+            <strong><p class="tro"><br></p></strong> <br>
+            <h1 style="font-size: 2.8rem; text-align: center;">
+                لیست پک ها:
+            </h1>
         </div> 
-      <br>
-      
+        <br>
     </section>
-<div style=" align-items: center; " class="cop">
-  <a class="dokme" href="../packs/pack76">BLOCKRYPVP</a>
 
-  <br> 
-    <a class="dokme" href="../packs/Ebiram-2K"> Ebiram 2k </a> <br>
-<a class="dokme" href="../packs/word.htm"> dreamiest 16x </a> <br> 
-<a class="dokme" href="https://s786mc.github.io/PvPPacks786/packs/Khoshtib-16x"> Khoshtib 16x </a>
-<br> <a href="https://channelcenter.ir/web/PvPPacks786_packs_Bombies" class="dokme">Bombies 80K </a><br>
-<a href="./Miroka" class="dokme">Miroka[32x].zip</a><br>
-</div>
-  <br><br><br><br>
- <center><button id="end" onclick="showAlert()">@PvPPacks_786</button> </center>
-  
-  <dashboard
-                      !پشتیبانی نشد!                                        class="p-center">
+    <div class="cop">
+        <!-- کارت 1: BLOCKRYPVP -->
+        <div class="pack-card">
+            <div class="pack-image" style="background-image: url('../image/blockrypvp.png');">
+                <div class="pack-badge">جدید</div>
+            </div>
+            <div class="pack-name">
+                <a href="../packs/pack76">BLOCKRYPVP</a>
+            </div>
+        </div>
+        
+        <!-- کارت 2: Ebiram 2k -->
+        <div class="pack-card">
+            <div class="pack-image" style="background-image: url('../image/ebiram.png');">
+                <div class="pack-badge">2K</div>
+            </div>
+            <div class="pack-name">
+                <a href="../packs/Ebiram-2K">Ebiram 2k</a>
+            </div>
+        </div>
+        
+        <!-- کارت 3: dreamiest 16x -->
+        <div class="pack-card">
+            <div class="pack-image" style="background-image: url('../image/dreamiest.png');">
+                <div class="pack-badge">16x</div>
+            </div>
+            <div class="pack-name">
+                <a href="../packs/word.htm">dreamiest 16x</a>
+            </div>
+        </div>
+        
+        <!-- کارت 4: Khoshtib 16x -->
+        <div class="pack-card">
+            <div class="pack-image" style="background-image: url('../image/khoshtib.png');">
+                <div class="pack-badge">16x</div>
+            </div>
+            <div class="pack-name">
+                <a href="https://s786mc.github.io/PvPPacks786/packs/Khoshtib-16x">Khoshtib 16x</a>
+            </div>
+        </div>
+        
+        <!-- کارت 5: Bombies 80K -->
+        <div class="pack-card">
+            <div class="pack-image" style="background-image: url('../image/bombies.png');">
+                <div class="pack-badge">80K</div>
+            </div>
+            <div class="pack-name">
+                <a href="https://channelcenter.ir/web/PvPPacks786_packs_Bombies">Bombies 80K</a>
+            </div>
+        </div>
+        
+        <!-- کارت 6: Miroka -->
+        <div class="pack-card">
+            <div class="pack-image" style="background-image: url('../image/miroka.png');">
+                <div class="pack-badge">32x</div>
+            </div>
+            <div class="pack-name">
+                <a href="./Miroka">Miroka [32x]</a>
+            </div>
+        </div>
+        
+        <!-- کارت 7: پک جدید -->
+        <div class="pack-card">
+            <div class="pack-image" style="background-image: url('../image/new-pack.png');">
+                <div class="pack-badge" style="background: #00ff88; color: #000;">پرمخاطب</div>
+            </div>
+            <div class="pack-name">
+                <a href="../packs/new-pack">پک ویژه PvP</a>
+            </div>
+        </div>
+    </div>
+
+    <br><br><br><br>
     
-  </dashboard>
-  <script>
-    function showAlert()
-  {
-    alert("وبسایت ، و خیلی از پک ها توسط ItsSadegh786MC درست شده اند.");
-  }
-  </script>
+    <center><button id="end" onclick="showAlert()">@PvPPacks_786</button></center>
+    
+    <dashboard class="p-center">!پشتیبانی نشد!</dashboard>
+    
+    <script>
+        function showAlert() {
+            alert("وبسایت ، و خیلی از پک ها توسط ItsSadegh786MC درست شده اند.");
+        }
+    </script>
 </body>
-  </html>
+</html>
