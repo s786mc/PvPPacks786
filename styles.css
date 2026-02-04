@@ -60,62 +60,200 @@ font-family: 'mcbold';
         text-align: center;
       }
       /* کانتینر ردیف دکمه‌ها */
+/* کانتینر دکمه‌ها */
 .dokme-row {
-  display: block;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
   width: 100%;
-  margin: 10px 0;
- 
+  margin: 20px 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-/* دکمه‌ها: هر کدام دقیقاً نصف عرض کانتینر */
+/* دکمه‌ها: هر کدام ۱۰۰٪ عرض */
 .dokme {
   color: #B97B1E;
-  background-color: #FFC05A;
-  border-radius: 20px;
-  border: 2px solid orange;
-  padding: 12px 18px;
+  background: linear-gradient(145deg, #FFC05A, #FFB848);
+  border-radius: 16px;
+  border: 3px solid #FFA41C;
+  padding: 18px 24px;
   text-decoration: none;
-  display: block;
+  display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Mikhak", "Mehr", sans-serif;
   font-size: 20px;
-  font-weight: 700;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+  font-weight: 800;
+  box-shadow: 
+    0 8px 20px rgba(185, 123, 30, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 48px;
-
-  /* این دو خط باعث می‌شود دقیقاً نصف شوند */
-  flex: 0 0 50%;
-  max-width: 50%;
+  min-height: 58px;
+  width: 100%;
+  position: relative;
   box-sizing: border-box;
+  
+  /* افکت نور لبه */
+  position: relative;
+  z-index: 1;
 }
 
-/* افکت ها هنگام هاور و فوکوس */
+/* افکت نور لبه */
+.dokme::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 14px;
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2));
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* افکت ها هنگام هاور */
 .dokme:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-  background-color: #ffdf8f;
-}
-.dokme:active { transform: translateY(-1px); }
-.dokme:focus {
-  outline: 3px solid rgba(185,123,30,0.18);
-  outline-offset: 3px;
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 
+    0 14px 30px rgba(185, 123, 30, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  background: linear-gradient(145deg, #FFCC6A, #FFC050);
+  border-color: #FF8C00;
 }
 
-/* اگر فقط یک دکمه داخل کانتینر باشد، آن را جمع و جورتر کن */
-.dokme-row.single .dokme {
-  max-width: 360px;
-  flex: 0 0 auto;
+.dokme:hover::before {
+  opacity: 1;
+}
+
+/* افکت فشردن */
+.dokme:active {
+  transform: translateY(-1px) scale(0.99);
+  box-shadow: 
+    0 4px 12px rgba(185, 123, 30, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s ease;
+}
+
+/* افکت فوکوس */
+.dokme:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 4px rgba(185, 123, 30, 0.2),
+    0 8px 20px rgba(185, 123, 30, 0.15);
+}
+
+/* افکت ضربه‌ای هنگام کلیک */
+@keyframes dokme-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(185, 123, 30, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(185, 123, 30, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(185, 123, 30, 0); }
+}
+
+.dokme:active {
+  animation: dokme-pulse 0.3s ease-out;
+}
+
+/* استایل برای دکمه‌های غیرفعال */
+.dokme.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  background: linear-gradient(145deg, #E0E0E0, #C0C0C0);
+  border-color: #A0A0A0;
+  color: #808080;
+}
+
+/* استایل برای دکمه‌های موفقیت */
+.dokme.success {
+  background: linear-gradient(145deg, #4CAF50, #45A049);
+  border-color: #388E3C;
+  color: white;
+}
+
+/* استایل برای دکمه‌های هشدار */
+.dokme.warning {
+  background: linear-gradient(145deg, #FF9800, #F57C00);
+  border-color: #EF6C00;
+  color: white;
+}
+
+/* استایل برای دکمه‌های خطا */
+.dokme.error {
+  background: linear-gradient(145deg, #F44336, #D32F2F);
+  border-color: #C62828;
+  color: white;
+}
+
+/* استایل برای موبایل */
+@media (max-width: 768px) {
+  .dokme-row {
+    gap: 12px;
+    margin: 15px 0;
+  }
+  
+  .dokme {
+    padding: 16px 20px;
+    font-size: 18px;
+    min-height: 52px;
+    border-radius: 14px;
+  }
+}
+
+/* استایل برای نمایش‌های بسیار کوچک */
+@media (max-width: 480px) {
+  .dokme {
+    padding: 14px 16px;
+    font-size: 16px;
+    min-height: 48px;
+    border-radius: 12px;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* افکت‌های مدرن اضافی */
+.dokme i, .dokme svg {
+  margin-right: 10px;
+  font-size: 1.2em;
+  vertical-align: middle;
+}
+
+/* افکت‌های لودینگ */
+.dokme.loading {
+  position: relative;
+  color: transparent;
+}
+
+.dokme.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(185, 123, 30, 0.3);
+  border-top-color: #B97B1E;
+  border-radius: 50%;
+  animation: dokme-spin 0.8s linear infinite;
+}
+
+@keyframes dokme-spin {
+  to { transform: rotate(360deg); }
 }
 
 /* در صورت نیاز می‌توان breakpoint خیلی کوچک اضافه کرد؛ فعلاً موبایل هم نصف می‌ماند */
