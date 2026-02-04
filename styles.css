@@ -61,13 +61,13 @@ font-family: 'mcbold';
       }
       /* کانتینر ردیف دکمه‌ها */
 .dokme-row {
-  display: flex;
+  display: block;
   gap: 12px;
   align-items: center;
   justify-content: center;
   width: 100%;
   margin: 10px 0;
-  flex-wrap: nowrap; /* مهم: کنار هم بمانند */
+ 
   box-sizing: border-box;
 }
 
