@@ -62,7 +62,7 @@ font-family: 'mcbold';
       /* کانتینر ردیف دکمه‌ها */
 /* کانتینر دکمه‌ها */
 
-
+.dokme-row { algin-items: center; display:flex; }
 /* دکمه‌ها: هر کدام ۱۰۰٪ عرض */
 .dokme {
   color: #B97B1E;
