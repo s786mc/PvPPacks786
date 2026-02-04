@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta lang="fa">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../fonts/Mikhak-template.css">
+    <style>
+        * { font-family: 'Mikhak'; }
+        .maps-container {
+            padding: 2rem; 
+            margin: 0rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            justify-items: center;
+        }
+        
+        /* استایل کارت نقشه */
+        .map-card {
+            width: 100%;
+            max-width: 300px;
+            background: linear-gradient(145deg, #1a365d, #2d3748);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 2px solid #2d3748;
+            position: relative;
+        }
+        
+        .map-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 150, 255, 0.25);
+            border-color: #0096ff;
+        }
+        
+        .map-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 15px;
+        }
+        
+        .map-title {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .map-description {
+            color: #cbd5e0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .map-details {
+            padding: 20px;
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .map-details a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background: #0096ff;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .map-details a:hover {
+            background: #0077cc;
+            transform: scale(1.05);
+        }
+        
+        .map-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #0096ff;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .map-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #a0aec0;
+            font-size: 0.85rem;
+        }
+        
+        .map-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+    <title>PvPPacks Maps</title>
+    <meta name="theme-color" content="#0096ff">
+</head>
+<body>
+    <header class="header">
+        <div class="header-text">@PvPPacks Maps</div>
+    </header>
+    
+    <section class="diagonal-section">
+        <div class="content">
+            <strong><p class="tro"><br></p></strong> <br>
+            <h1 style="font-size: 2.8rem; text-align: center;">
+                لیست نقشه‌ها:
+            </h1>
+        </div> 
+        <br>
+    </section>
+
+    <div class="maps-container">
+        <!-- فقط یک کارت نمونه -->
+        <div class="map-card">
+            <div class="map-badge">PvP</div>
+            <div class="map-image" style="background-image: url('مسیر-تصویر-نقشه-شما');">
+                <div class="map-overlay">
+                    <div class="map-title">نام نقشه شما</div>
+                    <div class="map-description">توضیحات نقشه اینجا قرار می‌گیرد</div>
+                </div>
+            </div>
+            <div class="map-details">
+                <div class="map-stats">
+                    <div class="map-stat">👥 تعداد بازیکن</div>
+                    <div class="map-stat">🏆 امتیاز</div>
+                    <div class="map-stat">🗺️ اندازه</div>
+                </div>
+                <a href="لینک-دانلود-نقشه">دانلود نقشه</a>
+            </div>
+        </div>
+        
+        <!-- بقیه کارت‌ها را خودتان اضافه می‌کنید -->
+        
+    </div>
+
+    <br><br><br><br>
+    
+    <center><button id="end" onclick="showAlert()">@PvPPacks Maps</button></center>
+    
+    <dashboard class="p-center"></dashboard>
+    
+    <script>
+        function showAlert() {
+            alert("وبسایت نقشه‌ها توسط ItsSadegh786MC درست شده است.");
+        }
+    </script>
+</body>
+</html>
