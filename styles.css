@@ -61,16 +61,7 @@ font-family: 'mcbold';
       }
       /* کانتینر ردیف دکمه‌ها */
 /* کانتینر دکمه‌ها */
-.dokme-row {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: stretch;
-  width: 100%;
-  margin: 20px 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 
 /* دکمه‌ها: هر کدام ۱۰۰٪ عرض */
 .dokme {
@@ -85,7 +76,7 @@ font-family: 'mcbold';
   justify-content: center;
   font-family: "Mikhak", "Mehr", sans-serif;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 100%;
   box-shadow: 
     0 8px 20px rgba(185, 123, 30, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
