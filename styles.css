@@ -79,7 +79,7 @@ font-family: 'mcbold';
   border: 2px solid orange;
   padding: 12px 18px;
   text-decoration: none;
-  display: inline-flex;
+  display: block;
   align-items: center;
   justify-content: center;
   font-family: "Mikhak", "Mehr", sans-serif;
