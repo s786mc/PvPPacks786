@@ -207,3 +207,194 @@ if (document.readyState === 'loading') {
 } else {
     applyLanguage();
 }
+// ==================== تشخیص خودکار زبان (Auto Language Detection) ====================
+
+function detectBrowserLanguage() {
+    // دریافت زبان مرورگر کاربر
+    const browserLang = navigator.language || navigator.userLanguage;
+    let detectedLang = null;
+    
+    // تبدیل به فرمت استاندارد (مانند en-US به en)
+    const primaryLang = browserLang.split('-')[0];
+    
+    // نقشه‌برداری زبان‌های مرورگر به کدهای سایت ما
+    const langMap = {
+        'en': 'English',
+        'ru': 'Русский',
+        'ar': 'العربية',
+        'fr': 'Français',
+        'de': 'Deutsch',
+        'es': 'Español',
+        'it': 'Italiano',
+        'zh': '中文',
+        'ja': '日本語',
+        'ko': '한국어',
+        'fa': 'فارسی' // برای فارسی
+    };
+    
+    // اگر زبان اصلی در نقشه وجود داشت
+    if (langMap[primaryLang]) {
+        detectedLang = langMap[primaryLang];
+    }
+    
+    return detectedLang;
+}
+
+function autoApplyLanguage() {
+    const params = new URLSearchParams(window.location.search);
+    const langParam = params.get('l');
+    const slParam = params.get('sl');
+    
+    // فقط اگر sl=true باشد، تشخیص خودکار انجام شود
+    if (slParam !== 'true') return;
+    
+    // اگر کاربر قبلاً زبان را دستی انتخاب کرده (پارامتر l دارد)، کاری نکن
+    if (langParam) return;
+    
+    // زبان مرورگر را تشخیص بده
+    const browserLang = detectBrowserLanguage();
+    
+    // اگر زبان فارسی تشخیص داده شد، کاری نکن (سایت فارسی پیش‌فرض است)
+    if (browserLang === 'فارسی') return;
+    
+    // اگر زبانی غیر از فارسی تشخیص داده شد که پشتیبانی می‌شود
+    if (browserLang && supportedLanguages.includes(browserLang)) {
+        applyLanguage(browserLang);
+        showAutoDetectMessage(browserLang);
+    }
+}
+
+function showAutoDetectMessage(langName) {
+    // ایجاد پیغام کوچک در گوشه صفحه
+    const messageDiv = document.createElement('div');
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 70px;
+        right: 10px;
+        background: rgba(255, 85, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        z-index: 10000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s ease;
+        max-width: 200px;
+        font-family: Tahoma, sans-serif;
+    `;
+    
+    // اضافه کردن استایل انیمیشن
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // نمایش نام زبان
+    let langDisplayName = langName;
+    if (langName === 'English') langDisplayName = 'English 🇺🇸';
+    else if (langName === 'Русский') langDisplayName = 'Русский 🇷🇺';
+    else if (langName === 'العربية') langDisplayName = 'العربية 🇸🇦';
+    else if (langName === 'Français') langDisplayName = 'Français 🇫🇷';
+    else if (langName === 'Deutsch') langDisplayName = 'Deutsch 🇩🇪';
+    else if (langName === 'Español') langDisplayName = 'Español 🇪🇸';
+    else if (langName === 'Italiano') langDisplayName = 'Italiano 🇮🇹';
+    else if (langName === '中文') langDisplayName = '中文 🇨🇳';
+    else if (langName === '日本語') langDisplayName = '日本語 🇯🇵';
+    else if (langName === '한국어') langDisplayName = '한국어 🇰🇷';
+    
+    messageDiv.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 4px;">🌐 Language Detected</div>
+        <div>Auto-switched to ${langDisplayName}</div>
+        <div style="font-size: 10px; margin-top: 4px; opacity: 0.8;">
+            <a href="?l=پارسی" style="color: white; text-decoration: underline;">بازگشت به فارسی</a>
+        </div>
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    // حذف خودکار بعد از 8 ثانیه
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
+            messageDiv.style.opacity = '0';
+            messageDiv.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }, 500);
+        }
+    }, 8000);
+    
+    // امکان بستن دستی
+    const closeBtn = document.createElement('span');
+    closeBtn.innerHTML = '×';
+    closeBtn.style.cssText = `
+        position: absolute;
+        top: 2px;
+        left: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+    `;
+    closeBtn.onclick = () => {
+        if (messageDiv.parentNode) {
+            messageDiv.parentNode.removeChild(messageDiv);
+        }
+    };
+    messageDiv.appendChild(closeBtn);
+}
+
+// اضافه کردن دکمه تشخیص خودکار به صفحه (اختیاری)
+function addAutoDetectButton() {
+    // فقط اگر در صفحه اصلی باشیم
+    if (!document.querySelector('.header-text')) return;
+    
+    const autoBtn = document.createElement('a');
+    autoBtn.href = '?sl=true';
+    autoBtn.innerHTML = '🌐 Auto Language';
+    autoBtn.style.cssText = `
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #ff5500;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        text-decoration: none;
+        font-family: Tahoma, sans-serif;
+        z-index: 100;
+        display: none; /* به طور پیش‌فرض مخفی */
+    `;
+    
+    // فقط در دستگاه‌های موبایل نشان داده شود
+    if (window.innerWidth < 768) {
+        autoBtn.style.display = 'block';
+    }
+    
+    document.querySelector('.header').appendChild(autoBtn);
+    
+    // تغییر سایز هنگام ریسایز
+    window.addEventListener('resize', () => {
+        autoBtn.style.display = window.innerWidth < 768 ? 'block' : 'none';
+    });
+}
+
+// اجرای تشخیص خودکار بعد از لود صفحه
+document.addEventListener('DOMContentLoaded', function() {
+    // اجرای تشخیص خودکار
+    autoApplyLanguage();
+    
+    // اضافه کردن دکمه (اختیاری)
+    addAutoDetectButton();
+    
+    // اگر DOM قبلاً لود شده
+    if (document.readyState !== 'loading') {
+        autoApplyLanguage();
+        addAutoDetectButton();
+    }
+});
